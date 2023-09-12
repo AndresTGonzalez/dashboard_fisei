@@ -12,7 +12,7 @@ class LaboratoriesService extends ChangeNotifier {
   bool isLoading = true;
 
   LaboratoriesService() {
-    getLaboratories();
+    // getLaboratories();
   }
 
   Future getLaboratories() async {

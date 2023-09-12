@@ -12,7 +12,7 @@ class TeachersService extends ChangeNotifier {
   bool isLoading = true;
 
   TeachersService() {
-    getTeachers();
+    // getTeachers();
   }
 
   Future getTeachers() async {

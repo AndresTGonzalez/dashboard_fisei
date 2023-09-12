@@ -12,7 +12,7 @@ class SubjectsService extends ChangeNotifier {
   bool isLoading = true;
 
   SubjectsService() {
-    getSubjects();
+    // getSubjects();
   }
 
   Future getSubjects() async {

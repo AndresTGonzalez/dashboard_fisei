@@ -131,21 +131,12 @@ class _LayoutState extends State<Layout> {
           Expanded(
             child: PageView(
               controller: pageController,
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Inicio',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                //
-                const TeachersPage(),
-                const SubjectsPage(),
-                const LaboratoriesPage(),
-                const SuggestionsPage(),
+              children: const [
+                HomePage(),
+                TeachersPage(),
+                SubjectsPage(),
+                LaboratoriesPage(),
+                SuggestionsPage(),
               ],
             ),
           ),
