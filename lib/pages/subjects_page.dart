@@ -1,17 +1,18 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/services/subjects_service.dart';
 import 'package:dashboard_fisei/services/teacher_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class TeachersPage extends StatelessWidget {
-  const TeachersPage({super.key});
+class SubjectsPage extends StatelessWidget {
+  const SubjectsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (_) => TeachersService(),
+        create: (_) => SubjectsService(),
         child: const _Table(),
       ),
     );
@@ -25,8 +26,8 @@ class _Table extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final teachersService = Provider.of<TeachersService>(context);
-    return teachersService.isLoading
+    final subjectsService = Provider.of<SubjectsService>(context);
+    return subjectsService.isLoading
         ? const Center(
             child: CircularProgressIndicator(
               color: AppColors.vine,
@@ -40,7 +41,7 @@ class _Table extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      _Search(teachersService: teachersService),
+                      _Search(teachersService: subjectsService),
                       const Spacer(),
                       MaterialButton(
                         onPressed: () {},
@@ -72,7 +73,7 @@ class _Table extends StatelessWidget {
                     ],
                   ),
                 ),
-                _DataTable(teachersService: teachersService),
+                _DataTable(subjectsService: subjectsService),
               ],
             ),
           );
@@ -85,7 +86,7 @@ class _Search extends StatelessWidget {
     required this.teachersService,
   });
 
-  final TeachersService teachersService;
+  final SubjectsService teachersService;
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +130,10 @@ class _Search extends StatelessWidget {
 class _DataTable extends StatelessWidget {
   const _DataTable({
     super.key,
-    required this.teachersService,
+    required this.subjectsService,
   });
 
-  final TeachersService teachersService;
+  final SubjectsService subjectsService;
 
   @override
   Widget build(BuildContext context) {
@@ -166,17 +167,19 @@ class _DataTable extends StatelessWidget {
           color: AppColors.black,
         ),
         columns: const [
-          DataColumn(label: Text('Cédula')),
-          DataColumn(label: Text('Nombre')),
+          DataColumn(label: Text('Materia')),
+          DataColumn(label: Text('Carrera')),
+          DataColumn(label: Text('Nivel')),
           DataColumn(label: Text('Acciones')),
         ],
         rows: [
-          for (final teacher in teachersService.searchTeachers)
+          for (final subject in subjectsService.searchsSubjects)
             DataRow(
               onSelectChanged: (value) {},
               cells: [
-                DataCell(Text(teacher.cedula)),
-                DataCell(Text(teacher.nombre)),
+                DataCell(Text(subject.nombre)),
+                DataCell(Text(subject.carrera)),
+                DataCell(Text(subject.nivel)),
                 DataCell(
                   Row(
                     children: [

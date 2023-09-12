@@ -1,17 +1,17 @@
 import 'package:dashboard_fisei/constants/constants.dart';
-import 'package:dashboard_fisei/services/teacher_service.dart';
+import 'package:dashboard_fisei/services/laboratories_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class TeachersPage extends StatelessWidget {
-  const TeachersPage({super.key});
+class LaboratoriesPage extends StatelessWidget {
+  const LaboratoriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (_) => TeachersService(),
+        create: (_) => LaboratoriesService(),
         child: const _Table(),
       ),
     );
@@ -25,8 +25,8 @@ class _Table extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final teachersService = Provider.of<TeachersService>(context);
-    return teachersService.isLoading
+    final laboratoriesService = Provider.of<LaboratoriesService>(context);
+    return laboratoriesService.isLoading
         ? const Center(
             child: CircularProgressIndicator(
               color: AppColors.vine,
@@ -40,7 +40,7 @@ class _Table extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      _Search(teachersService: teachersService),
+                      _Search(laboratoriesService: laboratoriesService),
                       const Spacer(),
                       MaterialButton(
                         onPressed: () {},
@@ -72,7 +72,7 @@ class _Table extends StatelessWidget {
                     ],
                   ),
                 ),
-                _DataTable(teachersService: teachersService),
+                _DataTable(laboratoriesService: laboratoriesService),
               ],
             ),
           );
@@ -82,10 +82,10 @@ class _Table extends StatelessWidget {
 class _Search extends StatelessWidget {
   const _Search({
     super.key,
-    required this.teachersService,
+    required this.laboratoriesService,
   });
 
-  final TeachersService teachersService;
+  final LaboratoriesService laboratoriesService;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class _Search extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         onChanged: (value) {
-          teachersService.search(value);
+          laboratoriesService.search(value);
         },
         cursorColor: AppColors.vine,
         decoration: const InputDecoration(
@@ -129,10 +129,10 @@ class _Search extends StatelessWidget {
 class _DataTable extends StatelessWidget {
   const _DataTable({
     super.key,
-    required this.teachersService,
+    required this.laboratoriesService,
   });
 
-  final TeachersService teachersService;
+  final LaboratoriesService laboratoriesService;
 
   @override
   Widget build(BuildContext context) {
@@ -166,17 +166,19 @@ class _DataTable extends StatelessWidget {
           color: AppColors.black,
         ),
         columns: const [
-          DataColumn(label: Text('Cédula')),
           DataColumn(label: Text('Nombre')),
+          DataColumn(label: Text('Cantidad de PC')),
+          DataColumn(label: Text('Capacidad')),
           DataColumn(label: Text('Acciones')),
         ],
         rows: [
-          for (final teacher in teachersService.searchTeachers)
+          for (final laboratory in laboratoriesService.searchsLaboratories)
             DataRow(
               onSelectChanged: (value) {},
               cells: [
-                DataCell(Text(teacher.cedula)),
-                DataCell(Text(teacher.nombre)),
+                DataCell(Text(laboratory.nombre)),
+                DataCell(Text(laboratory.cantidadPc.toString())),
+                DataCell(Text(laboratory.capacidad.toString())),
                 DataCell(
                   Row(
                     children: [

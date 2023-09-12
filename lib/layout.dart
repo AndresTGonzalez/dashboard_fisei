@@ -63,7 +63,7 @@ class _LayoutState extends State<Layout> {
           SideMenu(
             controller: sideMenu,
             style: SideMenuStyle(
-              openSideMenuWidth: MediaQuery.of(context).size.width * 0.17,
+              openSideMenuWidth: MediaQuery.of(context).size.width * 0.13,
               compactSideMenuWidth: 60,
               displayMode: SideMenuDisplayMode.auto,
               itemHeight: 40,
@@ -143,51 +143,9 @@ class _LayoutState extends State<Layout> {
                 ),
                 //
                 const TeachersPage(),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Files',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Download',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Settings',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Only Title',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Only Icon',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
+                const SubjectsPage(),
+                const LaboratoriesPage(),
+                const SuggestionsPage(),
               ],
             ),
           ),

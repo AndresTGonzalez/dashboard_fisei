@@ -1,22 +1,27 @@
 class Teacher {
-  final int identification;
-  final String name;
+  int id;
+  String nombre;
+  String cedula;
 
-  Teacher({required this.identification, required this.name});
+  Teacher({
+    required this.id,
+    required this.nombre,
+    required this.cedula,
+  });
 
-  // Método para convertir un mapa en una instancia de Teacher
-  factory Teacher.fromMap(Map<String, dynamic> map) {
+  factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
-      identification: map['identification'] as int,
-      name: map['name'] as String,
+      id: json['id'],
+      nombre: json['nombre'],
+      cedula: json['cedula'],
     );
   }
 
-  // Método para convertir una instancia de Teacher en un mapa
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'identification': identification,
-      'name': name,
+      'id': id,
+      'nombre': nombre,
+      'cedula': cedula,
     };
   }
 }

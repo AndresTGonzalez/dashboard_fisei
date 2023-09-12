@@ -1,17 +1,17 @@
 import 'package:dashboard_fisei/constants/constants.dart';
-import 'package:dashboard_fisei/services/teacher_service.dart';
+import 'package:dashboard_fisei/services/suggestions_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class TeachersPage extends StatelessWidget {
-  const TeachersPage({super.key});
+class SuggestionsPage extends StatelessWidget {
+  const SuggestionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (_) => TeachersService(),
+        create: (_) => SuggestionsService(),
         child: const _Table(),
       ),
     );
@@ -25,8 +25,8 @@ class _Table extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final teachersService = Provider.of<TeachersService>(context);
-    return teachersService.isLoading
+    final suggestionsService = Provider.of<SuggestionsService>(context);
+    return suggestionsService.isLoading
         ? const Center(
             child: CircularProgressIndicator(
               color: AppColors.vine,
@@ -40,7 +40,7 @@ class _Table extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      _Search(teachersService: teachersService),
+                      _Search(suggestionsService: suggestionsService),
                       const Spacer(),
                       MaterialButton(
                         onPressed: () {},
@@ -72,7 +72,7 @@ class _Table extends StatelessWidget {
                     ],
                   ),
                 ),
-                _DataTable(teachersService: teachersService),
+                _DataTable(suggestionsService: suggestionsService),
               ],
             ),
           );
@@ -82,10 +82,10 @@ class _Table extends StatelessWidget {
 class _Search extends StatelessWidget {
   const _Search({
     super.key,
-    required this.teachersService,
+    required this.suggestionsService,
   });
 
-  final TeachersService teachersService;
+  final SuggestionsService suggestionsService;
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class _Search extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         onChanged: (value) {
-          teachersService.search(value);
+          suggestionsService.search(value);
         },
         cursorColor: AppColors.vine,
         decoration: const InputDecoration(
@@ -129,10 +129,10 @@ class _Search extends StatelessWidget {
 class _DataTable extends StatelessWidget {
   const _DataTable({
     super.key,
-    required this.teachersService,
+    required this.suggestionsService,
   });
 
-  final TeachersService teachersService;
+  final SuggestionsService suggestionsService;
 
   @override
   Widget build(BuildContext context) {
@@ -166,31 +166,18 @@ class _DataTable extends StatelessWidget {
           color: AppColors.black,
         ),
         columns: const [
-          DataColumn(label: Text('Cédula')),
-          DataColumn(label: Text('Nombre')),
-          DataColumn(label: Text('Acciones')),
+          DataColumn(label: Text('Título')),
+          DataColumn(label: Text('Descripción')),
+          DataColumn(label: Text('Aula/Laboratorio')),
         ],
         rows: [
-          for (final teacher in teachersService.searchTeachers)
+          for (final suggestion in suggestionsService.searchsuggestions)
             DataRow(
               onSelectChanged: (value) {},
               cells: [
-                DataCell(Text(teacher.cedula)),
-                DataCell(Text(teacher.nombre)),
-                DataCell(
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.edit),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
-                  ),
-                ),
+                DataCell(Text(suggestion.nombre)),
+                DataCell(Text(suggestion.descripcion)),
+                DataCell(Text(suggestion.aula)),
               ],
             ),
         ],
