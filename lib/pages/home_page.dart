@@ -1,9 +1,35 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/forms/subjects_form.dart';
+import 'package:dashboard_fisei/models/select_carrer.dart';
+import 'package:dashboard_fisei/models/select_nivel.dart';
+import 'package:dashboard_fisei/models/subjects.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  List<SelectNivel> niveles = [
+    SelectNivel(value: 'Nivelacion', nivel: 'Nivelación'),
+    SelectNivel(value: 'Primero', nivel: 'Primero'),
+    SelectNivel(value: 'Segundo', nivel: 'Segundo'),
+    SelectNivel(value: 'Tercero', nivel: 'Tercero'),
+    SelectNivel(value: 'Cuarto', nivel: 'Cuarto'),
+    SelectNivel(value: 'Quinto', nivel: 'Quinto'),
+    SelectNivel(value: 'Sexto', nivel: 'Sexto'),
+    SelectNivel(value: 'Septimo', nivel: 'Septimo'),
+    SelectNivel(value: 'Octavo', nivel: 'Octavo'),
+    SelectNivel(value: 'Noveno', nivel: 'Noveno'),
+    SelectNivel(value: 'Decimo', nivel: 'Decimo'),
+  ];
+
+  List<SelectCarrer> carreras = [
+    SelectCarrer(id: 1, carrera: 'Software'),
+    SelectCarrer(id: 2, carrera: 'Telecomunicaciones'),
+    SelectCarrer(id: 3, carrera: 'Industrial'),
+    SelectCarrer(id: 4, carrera: 'Robótica'),
+    SelectCarrer(id: 5, carrera: 'TI'),
+  ];
+
+  HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,139 +58,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             MaterialButton(
               color: AppColors.black,
-              onPressed: () {
-                List<String> listaDeOpciones = [
-                  "A",
-                  "B",
-                  "C",
-                  "D",
-                  "E",
-                  "F",
-                  "G"
-                ];
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      actions: <Widget>[
-                        // Puedes agregar botones o acciones en el modal
-                        TextButton(
-                          child: Text(
-                            'Cerrar',
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                          onPressed: () {
-                            // Cierra el modal
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        MaterialButton(
-                          onPressed: () {},
-                          color: AppColors.green,
-                          height: 40,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            'Guardar',
-                            style: GoogleFonts.openSans(
-                              color: AppColors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        )
-                      ],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      title: Text(
-                        'Agregar o editar Materia',
-                        style: GoogleFonts.openSans(
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
-                      ),
-                      content: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: double.infinity,
-                              child: DropdownButtonFormField(
-                                borderRadius: BorderRadius.circular(10),
-                                style: GoogleFonts.openSans(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: AppColors.black,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  labelText: 'Carrera',
-                                  labelStyle: GoogleFonts.openSans(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                items: listaDeOpciones
-                                    .map((String opcion) => DropdownMenuItem(
-                                          child: Text(opcion),
-                                          value: opcion,
-                                        ))
-                                    .toList(),
-                                onChanged: (_) {},
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: TextFormField(
-                                cursorColor: AppColors.black,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: AppColors.black,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                  ),
-                                  labelText: 'Nombre',
-                                  labelStyle: GoogleFonts.openSans(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+              onPressed: () {},
               child: const Text(
                 'Formulario de materias',
                 style: TextStyle(

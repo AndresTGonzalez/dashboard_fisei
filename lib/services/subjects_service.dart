@@ -9,10 +9,14 @@ class SubjectsService extends ChangeNotifier {
   List<Materia> subjects = [];
   List<Materia> searchsSubjects = [];
 
+  String nombre = '';
+  String nivel = 'Nivelacion';
+  int idCarrera = 1;
+
   bool isLoading = true;
 
   SubjectsService() {
-    // getSubjects();
+    getSubjects();
   }
 
   Future getSubjects() async {
@@ -20,17 +24,47 @@ class SubjectsService extends ChangeNotifier {
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}actividades');
     final response = await http.get(url);
+    print(response.body);
+    // if (response.statusCode == 200) {
+    //   final List<dynamic> jsonData = jsonDecode(response.body)['actividades'];
+    //   subjects = jsonData.map((json) => Materia.fromJson(json)).toList();
+    //   searchsSubjects = subjects;
+    //   isLoading = false;
+    //   notifyListeners();
+    // } else {
+    //   isLoading = false;
+    //   notifyListeners();
+    //   // print(response.body);
+    // }
+  }
+
+  Future addSubject(Materia materia) async {
+    final url = Uri.parse('${API.BASE_URL}actividades');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'nombre': materia.nombre,
+          'nivel': materia.nivel,
+          'carrera': materia.carrera,
+          'id_carrera': materia.idCarrera,
+        },
+      ),
+    );
+    // print(response.body);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body)['actividades'];
-      subjects = jsonData.map((json) => Materia.fromJson(json)).toList();
-      searchsSubjects = subjects;
-      isLoading = false;
-      notifyListeners();
+      print(response.body);
+      final jsonData = jsonDecode(response.body);
+      print(jsonData);
+      // subjects.add(Materia.fromJson(jsonData));
+      Materia mat = Materia.fromJson(jsonData);
+      // searchsSubjects = subjects;
+      // notifyListeners();
     } else {
-      isLoading = false;
-      notifyListeners();
-      // print(response.body);
+      print(response.body);
     }
+    // print(materia.nombre);
   }
 
   void search(String query) {

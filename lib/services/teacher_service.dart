@@ -9,10 +9,13 @@ class TeachersService extends ChangeNotifier {
   List<Teacher> teachers = [];
   List<Teacher> searchTeachers = [];
 
+  String cedula = '';
+  String nombre = '';
+
   bool isLoading = true;
 
   TeachersService() {
-    // getTeachers();
+    getTeachers();
   }
 
   Future getTeachers() async {
@@ -30,6 +33,47 @@ class TeachersService extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       // print(response.body);
+    }
+  }
+
+  Future addTeacher(Teacher teacher) async {
+    final url = Uri.parse('${API.BASE_URL}docentes');
+    final response = await http.post(
+      url,
+      body: jsonEncode({
+        'docente': teacher.nombre,
+        'cedula': teacher.cedula,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      teachers.add(Teacher.fromJson(jsonData));
+      searchTeachers = teachers;
+      notifyListeners();
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future editTeacher(Teacher teacher) async {
+    final url = Uri.parse('${API.BASE_URL}docentes/${teacher.id}');
+    final response = await http.put(
+      url,
+      body: jsonEncode({
+        'docente': teacher.nombre,
+        'cedula': teacher.cedula,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      teachers[teachers.indexWhere((element) => element.id == teacher.id)] =
+          Teacher.fromJson(jsonData);
+      searchTeachers = teachers;
+      notifyListeners();
+    } else {
+      print(response.body);
     }
   }
 

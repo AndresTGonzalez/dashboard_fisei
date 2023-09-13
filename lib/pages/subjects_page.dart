@@ -1,4 +1,6 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/forms/subjects_form.dart';
+import 'package:dashboard_fisei/models/subjects.dart';
 import 'package:dashboard_fisei/services/subjects_service.dart';
 // import 'package:dashboard_fisei/services/teacher_service.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,24 @@ class _Table extends StatelessWidget {
                       _Search(teachersService: subjectsService),
                       const Spacer(),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return SubjectsForm(
+                                subjectsService: subjectsService,
+                                materia: Materia(
+                                  id: 0,
+                                  nombre: '',
+                                  nivel: 'Nivelacion',
+                                  carrera: '',
+                                  numeroNivel: 0,
+                                  idCarrera: 1,
+                                ),
+                              );
+                            },
+                          );
+                        },
                         color: AppColors.vine,
                         height: 40,
                         shape: RoundedRectangleBorder(
@@ -178,13 +197,23 @@ class _DataTable extends StatelessWidget {
               onSelectChanged: (value) {},
               cells: [
                 DataCell(Text(subject.nombre)),
-                DataCell(Text(subject.carrera)),
+                DataCell(Text(subject.carrera!)),
                 DataCell(Text(subject.nivel)),
                 DataCell(
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return SubjectsForm(
+                                materia: subject,
+                                subjectsService: subjectsService,
+                              );
+                            },
+                          );
+                        },
                         icon: const Icon(Icons.edit),
                       ),
                       IconButton(

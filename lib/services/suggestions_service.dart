@@ -12,7 +12,7 @@ class SuggestionsService extends ChangeNotifier {
   bool isLoading = true;
 
   SuggestionsService() {
-    // getSuggestions();
+    getSuggestions();
   }
 
   Future getSuggestions() async {

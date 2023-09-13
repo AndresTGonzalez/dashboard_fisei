@@ -12,7 +12,7 @@ class Teacher {
   factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
       id: json['id'],
-      nombre: json['nombre'],
+      nombre: json['docente'],
       cedula: json['cedula'],
     );
   }
@@ -20,7 +20,7 @@ class Teacher {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nombre': nombre,
+      'docente': nombre,
       'cedula': cedula,
     };
   }

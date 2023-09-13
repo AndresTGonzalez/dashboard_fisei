@@ -131,7 +131,7 @@ class _LayoutState extends State<Layout> {
           Expanded(
             child: PageView(
               controller: pageController,
-              children: const [
+              children: [
                 HomePage(),
                 TeachersPage(),
                 SubjectsPage(),

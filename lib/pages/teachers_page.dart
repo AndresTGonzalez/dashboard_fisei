@@ -1,4 +1,6 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/forms/teachers_form.dart';
+import 'package:dashboard_fisei/models/teacher.dart';
 import 'package:dashboard_fisei/services/teacher_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +45,22 @@ class _Table extends StatelessWidget {
                       _Search(teachersService: teachersService),
                       const Spacer(),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ChangeNotifierProvider(
+                              create: (_) => TeachersService(),
+                              child: TeacherFormDialog(
+                                teachersService: teachersService,
+                                teacher: Teacher(
+                                  id: 0,
+                                  cedula: '',
+                                  nombre: '',
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                         color: AppColors.vine,
                         height: 40,
                         shape: RoundedRectangleBorder(
@@ -181,7 +198,18 @@ class _DataTable extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => ChangeNotifierProvider(
+                              create: (_) => TeachersService(),
+                              child: TeacherFormDialog(
+                                teachersService: teachersService,
+                                teacher: teacher,
+                              ),
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.edit),
                       ),
                       IconButton(
