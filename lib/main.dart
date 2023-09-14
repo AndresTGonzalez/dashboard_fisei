@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/layout.dart';
+import 'package:dashboard_fisei/utils/custom_scroll_behivor.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       title: 'Horarios FISEI - Admin',
       theme: ThemeData(
         useMaterial3: true,
