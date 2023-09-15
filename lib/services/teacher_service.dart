@@ -57,12 +57,13 @@ class TeachersService extends ChangeNotifier {
   }
 
   Future editTeacher(Teacher teacher) async {
+    // print(teacher.id);
+
     final url = Uri.parse('${API.BASE_URL}docentes/${teacher.id}');
     final response = await http.put(
       url,
       body: jsonEncode({
         'docente': teacher.nombre,
-        'cedula': teacher.cedula,
       }),
       headers: {'Content-Type': 'application/json'},
     );
@@ -70,6 +71,18 @@ class TeachersService extends ChangeNotifier {
       final jsonData = jsonDecode(response.body);
       teachers[teachers.indexWhere((element) => element.id == teacher.id)] =
           Teacher.fromJson(jsonData);
+      searchTeachers = teachers;
+      notifyListeners();
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future deleteTeacher(int id) async {
+    final url = Uri.parse('${API.BASE_URL}docentes/$id');
+    final response = await http.delete(url);
+    if (response.statusCode == 200) {
+      teachers.removeWhere((element) => element.id == id);
       searchTeachers = teachers;
       notifyListeners();
     } else {

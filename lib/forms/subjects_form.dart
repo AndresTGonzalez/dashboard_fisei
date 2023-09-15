@@ -160,20 +160,26 @@ class SubjectsForm extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             if (materia.id == 0) {
-              // await subjectsService.addSubject(
-
-              // );
               Materia materia = Materia(
                 id: 0,
                 nombre: subjectsService.nombre,
                 nivel: subjectsService.nivel,
                 idCarrera: subjectsService.idCarrera,
               );
+              // Cerrar el dialog
+              Navigator.of(context).pop();
               await subjectsService.addSubject(materia);
-
-              // await subjectsService.addSubject(mat);
             } else {
-              // await subjectsService.updateSubject(materia);
+              await subjectsService.updateSubject(
+                Materia(
+                  id: materia.id,
+                  nombre: subjectsService.nombre,
+                  nivel: subjectsService.nivel,
+                  idCarrera: subjectsService.idCarrera,
+                ),
+              );
+              // Cerrar el dialog
+              Navigator.of(context).pop();
             }
           },
           color: AppColors.green,

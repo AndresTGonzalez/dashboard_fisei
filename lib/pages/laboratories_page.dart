@@ -1,4 +1,6 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/forms/laboratory_form.dart';
+import 'package:dashboard_fisei/models/laboratory.dart';
 import 'package:dashboard_fisei/services/laboratories_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,7 +45,22 @@ class _Table extends StatelessWidget {
                       _Search(laboratoriesService: laboratoriesService),
                       const Spacer(),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return LaboratoryForm(
+                                aula: Aula(
+                                  id: 0,
+                                  nombre: '',
+                                  cantidadPc: 0,
+                                  capacidad: 0,
+                                ),
+                                laboratoriesService: laboratoriesService,
+                              );
+                            },
+                          );
+                        },
                         color: AppColors.vine,
                         height: 40,
                         shape: RoundedRectangleBorder(
@@ -176,19 +193,90 @@ class _DataTable extends StatelessWidget {
             DataRow(
               onSelectChanged: (value) {},
               cells: [
-                DataCell(Text(laboratory.nombre)),
+                DataCell(Text(laboratory.nombre!)),
                 DataCell(Text(laboratory.cantidadPc.toString())),
                 DataCell(Text(laboratory.capacidad.toString())),
                 DataCell(
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        tooltip: 'Editar',
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              laboratoriesService.nombre = laboratory.nombre!;
+                              laboratoriesService.edificio =
+                                  laboratory.edificio!;
+                              laboratoriesService.piso = laboratory.piso!;
+                              laboratoriesService.cantidadPc =
+                                  laboratory.cantidadPc!;
+                              laboratoriesService.capacidad =
+                                  laboratory.capacidad!;
+                              laboratoriesService.aireAcondicionado =
+                                  laboratory.aire!;
+                              laboratoriesService.proyector =
+                                  laboratory.proyector!;
+                              return LaboratoryForm(
+                                aula: laboratory,
+                                laboratoriesService: laboratoriesService,
+                              );
+                            },
+                          );
+                        },
                         icon: const Icon(Icons.edit),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        tooltip: 'Eliminar',
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: const Text('Eliminar'),
+                              content: const Text(
+                                  '¿Está seguro que desea eliminar este laboratorio?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    'Cancelar',
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                ),
+                                MaterialButton(
+                                  onPressed: () async {
+                                    await laboratoriesService
+                                        .deleteLaboratory(laboratory.id!);
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                  },
+                                  color: AppColors.vine,
+                                  child: const Text(
+                                    'Eliminar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.delete),
+                      ),
+                      IconButton(
+                        tooltip: 'Software',
+                        onPressed: () {},
+                        icon: const Icon(Icons.developer_mode),
+                      ),
+                      IconButton(
+                        tooltip: 'Características',
+                        onPressed: () {},
+                        icon: const Icon(Icons.table_rows_rounded),
                       ),
                     ],
                   ),

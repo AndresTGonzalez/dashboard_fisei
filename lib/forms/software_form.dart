@@ -1,17 +1,10 @@
 import 'package:dashboard_fisei/constants/constants.dart';
-import 'package:dashboard_fisei/models/teacher.dart';
-import 'package:dashboard_fisei/services/teacher_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TeacherFormDialog extends StatelessWidget {
-  final TeachersService teachersService;
-  final Teacher teacher;
-
-  TeacherFormDialog({
+class SoftwareForm extends StatelessWidget {
+  SoftwareForm({
     super.key,
-    required this.teachersService,
-    required this.teacher,
   });
 
   @override
@@ -21,7 +14,7 @@ class TeacherFormDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        'Agregar o editar Docente',
+        'Agregar o editar Software',
         style: GoogleFonts.openSans(
           color: AppColors.black,
           fontWeight: FontWeight.w600,
@@ -38,10 +31,10 @@ class TeacherFormDialog extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextFormField(
-                  initialValue: teacher.cedula,
-                  enabled: teacher.id == 0,
+                  // initialValue: teacher.cedula,
+                  // enabled: teacher.id == 0,
                   onChanged: (value) {
-                    teachersService.cedula = value;
+                    // teachersService.cedula = value;
                   },
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
@@ -56,7 +49,7 @@ class TeacherFormDialog extends StatelessWidget {
                         Radius.circular(10),
                       ),
                     ),
-                    labelText: 'Cédula',
+                    labelText: 'Nombre',
                     labelStyle: GoogleFonts.openSans(
                       color: AppColors.black,
                       fontWeight: FontWeight.w400,
@@ -69,8 +62,8 @@ class TeacherFormDialog extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: TextFormField(
-                  initialValue: teacher.nombre,
-                  onChanged: (value) => teachersService.nombre = value,
+                  // initialValue: teacher.nombre,
+                  // onChanged: (value) => teachersService.nombre = value,
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -84,7 +77,7 @@ class TeacherFormDialog extends StatelessWidget {
                         Radius.circular(10),
                       ),
                     ),
-                    labelText: 'Nombre',
+                    labelText: 'Versión',
                     labelStyle: GoogleFonts.openSans(
                       color: AppColors.black,
                       fontWeight: FontWeight.w400,
@@ -115,29 +108,7 @@ class TeacherFormDialog extends StatelessWidget {
           },
         ),
         MaterialButton(
-          onPressed: () async {
-            if (teacher.id == 0) {
-              await teachersService.addTeacher(
-                Teacher(
-                  cedula: teachersService.cedula,
-                  nombre: teachersService.nombre,
-                  id: 0,
-                ),
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
-            } else {
-              await teachersService.editTeacher(
-                Teacher(
-                  cedula: teachersService.cedula,
-                  nombre: teachersService.nombre,
-                  id: teacher.id,
-                ),
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
-            }
-          },
+          onPressed: () async {},
           color: AppColors.green,
           height: 40,
           shape: RoundedRectangleBorder(

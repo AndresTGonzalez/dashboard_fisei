@@ -1,4 +1,7 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/forms/laboratory_form.dart';
+import 'package:dashboard_fisei/forms/schedule_form.dart';
+import 'package:dashboard_fisei/forms/software_form.dart';
 import 'package:dashboard_fisei/forms/subjects_form.dart';
 import 'package:dashboard_fisei/models/select_carrer.dart';
 import 'package:dashboard_fisei/models/select_nivel.dart';
@@ -91,9 +94,16 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             MaterialButton(
               color: AppColors.black,
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ScheduleForm();
+                  },
+                );
+              },
               child: const Text(
-                'Formulario de software',
+                'Formulario de horarios',
                 style: TextStyle(
                   color: AppColors.white,
                 ),

@@ -2,7 +2,7 @@ class Materia {
   int id;
   String nombre;
   String nivel;
-  int? numeroNivel;
+  String? numeroNivel;
   String? carrera;
   int idCarrera;
   DateTime? createdAt;

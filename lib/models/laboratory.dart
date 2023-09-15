@@ -45,36 +45,36 @@ class Software {
 }
 
 class Aula {
-  final int id;
-  final String nombre;
-  final String edificio;
-  final int numeroEdificio;
-  final String piso;
-  final int numeroPiso;
-  final bool? proyector;
-  final bool? aire;
-  final int cantidadPc;
-  final int capacidad;
-  final String createdAt;
-  final String updatedAt;
-  final List<Caracteristica> caracteristicas;
-  final List<Software> softwares;
+  final int? id;
+  final String? nombre;
+  final String? edificio;
+  final int? numeroEdificio;
+  final String? piso;
+  final int? numeroPiso;
+  final String? proyector;
+  final String? aire;
+  final int? cantidadPc;
+  final int? capacidad;
+  final String? createdAt;
+  final String? updatedAt;
+  final List<Caracteristica>? caracteristicas;
+  final List<Software>? softwares;
 
   Aula({
-    required this.id,
-    required this.nombre,
-    required this.edificio,
-    required this.numeroEdificio,
-    required this.piso,
-    required this.numeroPiso,
+    this.id,
+    this.nombre,
+    this.edificio,
+    this.numeroEdificio,
+    this.piso,
+    this.numeroPiso,
     this.proyector,
     this.aire,
-    required this.cantidadPc,
-    required this.capacidad,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.caracteristicas,
-    required this.softwares,
+    this.cantidadPc,
+    this.capacidad,
+    this.createdAt,
+    this.updatedAt,
+    this.caracteristicas,
+    this.softwares,
   });
 
   factory Aula.fromJson(Map<String, dynamic> json) {

@@ -103,14 +103,6 @@ class _LayoutState extends State<Layout> {
                 tooltipContent: "Inicio",
               ),
               SideMenuItem(
-                title: 'Horarios',
-                onTap: (index, _) {
-                  sideMenu.changePage(index);
-                },
-                icon: const Icon(Icons.schedule),
-                tooltipContent: "Inicio",
-              ),
-              SideMenuItem(
                 title: "Docentes",
                 onTap: (index, _) {
                   sideMenu.changePage(index);
@@ -151,7 +143,6 @@ class _LayoutState extends State<Layout> {
               children: [
                 HomePage(),
                 SchedulesPage(),
-                SchedulesPageTable(),
                 TeachersPage(),
                 SubjectsPage(),
                 LaboratoriesPage(),

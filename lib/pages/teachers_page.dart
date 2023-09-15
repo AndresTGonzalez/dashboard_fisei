@@ -198,6 +198,7 @@ class _DataTable extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
+                        tooltip: 'Editar',
                         onPressed: () {
                           showDialog(
                             context: context,
@@ -213,7 +214,46 @@ class _DataTable extends StatelessWidget {
                         icon: const Icon(Icons.edit),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        tooltip: 'Eliminar',
+                        onPressed: () {
+                          //Dialogo para mostrar confirmacion de eliminar
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: const Text('Eliminar'),
+                              content: const Text(
+                                  '¿Está seguro que desea eliminar este docente?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    'Cancelar',
+                                    style: TextStyle(
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                ),
+                                MaterialButton(
+                                  onPressed: () async {
+                                    await teachersService.deleteTeacher(
+                                      teacher.id,
+                                    );
+                                    Navigator.of(context).pop();
+                                  },
+                                  color: AppColors.vine,
+                                  child: const Text(
+                                    'Eliminar',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                         icon: const Icon(Icons.delete),
                       ),
                     ],
