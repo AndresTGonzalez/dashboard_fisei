@@ -10,6 +10,18 @@ class SchedulesService extends ChangeNotifier {
 
   bool isLoading = false;
 
+  // Ordenar los horarios por dia luego por hora de inicio
+  void sortSchedules() {
+    schedules.sort((a, b) {
+      if (a.diaSemana == b.diaSemana) {
+        return a.horaInicio.compareTo(b.horaInicio);
+      } else {
+        return a.diaSemana.compareTo(b.diaSemana);
+      }
+    });
+    notifyListeners();
+  }
+
   Future getSchedulesByTeacher(int id) async {
     isLoading = true;
     notifyListeners();
@@ -25,6 +37,7 @@ class SchedulesService extends ChangeNotifier {
         final scheduleTemp = HorarioInfo.fromJson(schedule);
         schedules.add(scheduleTemp);
       });
+      sortSchedules();
       isLoading = false;
       notifyListeners();
     } else {

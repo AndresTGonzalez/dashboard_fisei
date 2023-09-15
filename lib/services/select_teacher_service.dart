@@ -9,8 +9,13 @@ class SelectTeacherService extends ChangeNotifier {
   List<Teacher> teachers = [];
 
   SelectTeacherService() {
-    print('Entra al constructor');
     getTeachers();
+  }
+
+  //Ordenar los docentes por orden alfabetico
+  void sortTeachers() {
+    teachers.sort((a, b) => a.nombre.compareTo(b.nombre));
+    notifyListeners();
   }
 
   Future getTeachers() async {
