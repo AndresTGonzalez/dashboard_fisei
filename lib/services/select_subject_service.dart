@@ -8,6 +8,15 @@ import 'package:http/http.dart' as http;
 class SelectSubjectService extends ChangeNotifier {
   List<SelectSubject> selectSubjects = [];
 
+  int _selectedCarrer = 0;
+
+  int get selectCarrer => _selectedCarrer;
+
+  set selectCarrer(int value) {
+    _selectedCarrer = value;
+    notifyListeners();
+  }
+
   SelectSubjectService() {
     // getSubjects();
   }

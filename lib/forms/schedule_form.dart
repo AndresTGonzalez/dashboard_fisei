@@ -1,47 +1,332 @@
-import 'package:dashboard_fisei/models/select_carrer.dart';
-import 'package:dashboard_fisei/models/select_day.dart';
-import 'package:dashboard_fisei/models/select_hour.dart';
-import 'package:dashboard_fisei/models/select_parallel.dart';
-import 'package:dashboard_fisei/models/select_teacher.dart';
+import 'package:dashboard_fisei/constants/app_colors.dart';
+import 'package:dashboard_fisei/services/schedules_service.dart';
 import 'package:dashboard_fisei/services/select_laboratory_service.dart';
 import 'package:dashboard_fisei/services/select_subject_service.dart';
-import 'package:dashboard_fisei/services/select_teacher_service.dart';
+import 'package:dashboard_fisei/utils/selector_static_options.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/constants.dart';
+class ScheduleForm2 extends StatelessWidget {
+  final int teacherId;
+  final SchedulesService schedulesService;
 
-// ignore: must_be_immutable
-class ScheduleForm extends StatelessWidget {
-  ScheduleForm({
+  const ScheduleForm2({
+    required this.schedulesService,
+    required this.teacherId,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+    return MultiProvider(
+      providers: [
+        // ChangeNotifierProvider(create: (_) => SchedulesService()),
+        ChangeNotifierProvider(create: (_) => SelectSubjectService()),
+        ChangeNotifierProvider(create: (_) => SelectLaboratoryService()),
+      ],
+      child: _FormDialog(
+        schedulesService: schedulesService,
+        teacherId: teacherId,
       ),
+    );
+  }
+}
+
+class _FormDialog extends StatelessWidget {
+  final SchedulesService schedulesService;
+
+  final int teacherId;
+
+  _FormDialog({
+    required this.teacherId,
+    required this.schedulesService,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // final schedulesService = Provider.of<SchedulesService>(context);
+    final selectSubjectService = Provider.of<SelectSubjectService>(context);
+    final selectLaboratoryService =
+        Provider.of<SelectLaboratoryService>(context);
+    return AlertDialog(
+      scrollable: true,
       title: Text(
-        'Agregar o editar Horarios',
+        'Agregar horario',
         style: GoogleFonts.openSans(
           color: AppColors.black,
           fontWeight: FontWeight.w600,
           fontSize: 20,
         ),
       ),
-      scrollable: true,
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.5,
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => SelectTeacherService()),
-            ChangeNotifierProvider(create: (_) => SelectLaboratoryService()),
-            ChangeNotifierProvider(create: (_) => SelectSubjectService()),
-          ],
-          child: _Form(),
+        child: Form(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.16,
+                    child: DropdownButtonFormField(
+                      items: SelectorStaticOptions.days
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.value,
+                              child: Text(
+                                e.day,
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        schedulesService.numeroDia = value as int;
+                      },
+                      decoration: _dropdownStyle(label: 'Día'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.16,
+                    child: DropdownButtonFormField(
+                      items: SelectorStaticOptions.hours
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.value,
+                              child: Text(
+                                e.hour,
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        schedulesService.horaInicio = value as String;
+                      },
+                      decoration: _dropdownStyle(label: 'Hora de inicio'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.16,
+                    child: DropdownButtonFormField(
+                      items: SelectorStaticOptions.hours
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.value,
+                              child: Text(
+                                e.hour,
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        schedulesService.horaFin = value as String;
+                      },
+                      decoration: _dropdownStyle(label: 'Hora de fin'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Carrera y Materia
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: DropdownButtonFormField(
+                      items: SelectorStaticOptions.carreras
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.id,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                child: SizedBox(
+                                  child: SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.18,
+                                    child: Text(
+                                      e.carrera,
+                                      style: GoogleFonts.openSans(
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        selectSubjectService.selectCarrer = value as int;
+                        selectSubjectService
+                            .getSubjects(selectSubjectService.selectCarrer);
+                      },
+                      decoration: _dropdownStyle(label: 'Carrera'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: DropdownButtonFormField(
+                      items: selectSubjectService.selectSubjects
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.value,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.18,
+                                child: Text(
+                                  e.subject,
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: selectSubjectService.selectCarrer == 0
+                          ? null
+                          : (value) {
+                              schedulesService.actividadId = value as int;
+                            },
+                      decoration: _dropdownStyle(label: 'Materia'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Laboratorio y Paralelo
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: DropdownButtonFormField(
+                      items: SelectorStaticOptions.parallels
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.value,
+                              child: Text(
+                                e.parallel,
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        schedulesService.paraleloId = value as int;
+                      },
+                      decoration: _dropdownStyle(label: 'Paralelo'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                    child: DropdownButtonFormField(
+                      items: selectLaboratoryService.selectLaboratories
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e.value,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.18,
+                                child: Text(
+                                  e.laboratory,
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        schedulesService.aulaId = value as int;
+                      },
+                      decoration: _dropdownStyle(label: 'Laboratorio'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                height: 1,
+                color: AppColors.black.withOpacity(0.2),
+              ),
+              const SizedBox(height: 20),
+              // Aqui va el boton y el puesto
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.15,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.15,
+                      child: MaterialButton(
+                        onPressed: () {
+                          schedulesService.isPosition =
+                              !schedulesService.isPosition;
+                        },
+                        color: schedulesService.isPosition
+                            ? AppColors.vine
+                            : AppColors.green,
+                        height: 50,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          schedulesService.isPosition
+                              ? 'Deshabilitar puesto'
+                              : 'Habilitar puesto',
+                          style: GoogleFonts.openSans(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  schedulesService.isPosition
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.24,
+                          child: TextFormField(
+                            enabled: schedulesService.isPosition,
+                            onChanged: (value) {
+                              schedulesService.numeroPuesto = value;
+                            },
+                            decoration: _dropdownStyle(label: 'Puesto'),
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
@@ -61,7 +346,21 @@ class ScheduleForm extends StatelessWidget {
           },
         ),
         MaterialButton(
-          onPressed: () async {},
+          onPressed: () async {
+            await schedulesService.addSchedule(
+              aulaId: schedulesService.aulaId,
+              docenteId: teacherId,
+              actividadId: schedulesService.actividadId,
+              paraleloId: schedulesService.paraleloId,
+              horaInicio: schedulesService.horaInicio,
+              horaFin: schedulesService.horaFin,
+              numeroPuesto: schedulesService.numeroPuesto,
+              numeroDia: schedulesService.numeroDia,
+            );
+            // Actualiza la lista de horarios
+            await schedulesService.getSchedulesByTeacher(teacherId);
+            Navigator.of(context).pop();
+          },
           color: AppColors.green,
           height: 40,
           shape: RoundedRectangleBorder(
@@ -101,374 +400,6 @@ class ScheduleForm extends StatelessWidget {
         color: AppColors.black,
         fontWeight: FontWeight.w400,
         fontSize: 14,
-      ),
-    );
-  }
-}
-
-class _Form extends StatefulWidget {
-  _Form({super.key});
-
-  @override
-  State<_Form> createState() => _FormState();
-}
-
-class _FormState extends State<_Form> {
-  bool enabled = false;
-  bool puesto = false;
-  int carrerId = 1;
-
-  List<SelectDay> days = [
-    SelectDay(value: 1, day: 'Lunes'),
-    SelectDay(value: 2, day: 'Martes'),
-    SelectDay(value: 3, day: 'Miercoles'),
-    SelectDay(value: 4, day: 'Jueves'),
-    SelectDay(value: 5, day: 'Viernes'),
-    SelectDay(value: 6, day: 'Sabado'),
-  ];
-
-  List<SelectHour> hours = [
-    SelectHour(value: 7, hour: '07H00'),
-    SelectHour(value: 8, hour: '08H00'),
-    SelectHour(value: 9, hour: '09H00'),
-    SelectHour(value: 10, hour: '10H00'),
-    SelectHour(value: 11, hour: '11H00'),
-    SelectHour(value: 12, hour: '12H00'),
-    SelectHour(value: 13, hour: '13H00'),
-    SelectHour(value: 14, hour: '14H00'),
-    SelectHour(value: 15, hour: '15H00'),
-    SelectHour(value: 16, hour: '16H00'),
-    SelectHour(value: 17, hour: '17H00'),
-    SelectHour(value: 18, hour: '18H00'),
-    SelectHour(value: 19, hour: '19H00'),
-    SelectHour(value: 20, hour: '20H00'),
-    SelectHour(value: 21, hour: '21H00')
-  ];
-
-  List<SelectParallel> parallels = [
-    SelectParallel(value: 1, parallel: 'A'),
-    SelectParallel(value: 2, parallel: 'B'),
-    SelectParallel(value: 3, parallel: 'C'),
-    SelectParallel(value: 4, parallel: 'D'),
-  ];
-
-  List<SelectCarrer> carreras = [
-    SelectCarrer(id: 1, carrera: 'Software'),
-    SelectCarrer(id: 2, carrera: 'Telecomunicaciones'),
-    SelectCarrer(id: 3, carrera: 'Industrial'),
-    SelectCarrer(id: 4, carrera: 'Robótica'),
-    SelectCarrer(id: 5, carrera: 'TI'),
-  ];
-
-  InputDecoration _dropdownStyle({String? label}) {
-    return InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(
-          color: AppColors.black,
-        ),
-      ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(
-          color: AppColors.black,
-        ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      labelText: label,
-      labelStyle: GoogleFonts.openSans(
-        color: AppColors.black,
-        fontWeight: FontWeight.w400,
-        fontSize: 14,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final selectTeacherService = Provider.of<SelectTeacherService>(context);
-    final selectLaboratoryService =
-        Provider.of<SelectLaboratoryService>(context);
-    final selectSubjectService = Provider.of<SelectSubjectService>(context);
-    return Form(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.16,
-                child: DropdownButtonFormField(
-                  items: days
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.value,
-                          child: Text(
-                            e.day,
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Día'),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.16,
-                child: DropdownButtonFormField(
-                  items: hours
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.value,
-                          child: Text(
-                            e.hour,
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Hora de inicio'),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.16,
-                child: DropdownButtonFormField(
-                  items: hours
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.value,
-                          child: Text(
-                            e.hour,
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Hora de fin'),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-                child: DropdownButtonFormField(
-                  items: carreras
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.id,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            child: SizedBox(
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.18,
-                                child: Text(
-                                  e.carrera,
-                                  style: GoogleFonts.openSans(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      carrerId = value as int;
-                    });
-                    setState(() {
-                      enabled = true;
-                    });
-                    selectSubjectService.getSubjects(carrerId);
-                  },
-                  decoration: _dropdownStyle(label: 'Carrera'),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-                child: DropdownButtonFormField(
-                  items: selectSubjectService.selectSubjects
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.value,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            child: Text(
-                              e.subject,
-                              style: GoogleFonts.openSans(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: enabled ? (value) {} : null,
-                  decoration: _dropdownStyle(label: 'Materia'),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-                child: DropdownButtonFormField(
-                  items: selectTeacherService.teachers
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.id,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            child: Text(
-                              e.nombre,
-                              style: GoogleFonts.openSans(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Docente'),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-                child: DropdownButtonFormField(
-                  items: parallels
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.value,
-                          child: Text(
-                            e.parallel,
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Paralelo'),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-                child: DropdownButtonFormField(
-                  items: selectLaboratoryService.selectLaboratories
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e.value,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.18,
-                            child: Text(
-                              e.laboratory,
-                              style: GoogleFonts.openSans(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Laboratorio'),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-              ),
-            ],
-          ),
-          const SizedBox(height: 25),
-          //Agregar una linea separadora
-          Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: 1,
-            color: AppColors.black.withOpacity(0.2),
-          ),
-          const SizedBox(height: 25),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.15,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.15,
-                  child: MaterialButton(
-                    onPressed: () {
-                      setState(() {
-                        puesto = !puesto;
-                      });
-                    },
-                    color: puesto ? AppColors.vine : AppColors.green,
-                    height: 50,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(
-                      puesto ? 'Deshabilitar puesto' : 'Habilitar puesto',
-                      style: GoogleFonts.openSans(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.24,
-                child: TextFormField(
-                  enabled: puesto,
-                  onChanged: (value) {},
-                  decoration: _dropdownStyle(label: 'Puesto'),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

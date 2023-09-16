@@ -102,14 +102,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             MaterialButton(
               color: AppColors.black,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return ScheduleForm();
-                  },
-                );
-              },
+              onPressed: () {},
               child: const Text(
                 'Formulario de horarios',
                 style: TextStyle(

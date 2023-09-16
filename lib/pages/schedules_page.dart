@@ -1,4 +1,4 @@
-import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/constants/app_colors.dart';
 import 'package:dashboard_fisei/forms/schedule_form.dart';
 import 'package:dashboard_fisei/services/schedules_service.dart';
 import 'package:dashboard_fisei/services/select_teacher_service.dart';
@@ -11,33 +11,105 @@ class SchedulesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => SchedulesService(),
-          ),
-          ChangeNotifierProvider(create: (_) => SelectTeacherService()),
-        ],
-        child: const _Table(),
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SchedulesService()),
+        ChangeNotifierProvider(create: (_) => SelectTeacherService()),
+      ],
+      child: const _Content(),
     );
   }
 }
 
-class _Table extends StatefulWidget {
-  const _Table({
-    super.key,
-  });
+class _Content extends StatelessWidget {
+  const _Content();
 
   @override
-  State<_Table> createState() => _TableState();
-}
+  Widget build(BuildContext context) {
+    final selectTeachersService = Provider.of<SelectTeacherService>(context);
+    final schedulesService = Provider.of<SchedulesService>(context);
 
-class _TableState extends State<_Table> {
-  bool available = false;
-  int teacherId = 0;
-  String teacherName = '';
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: DropdownButtonFormField(
+                      items: selectTeachersService.teachers.map((teacher) {
+                        return DropdownMenuItem(
+                          value: teacher.id,
+                          child: Text(
+                            teacher.nombre,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        schedulesService.selectedTeacherId = value as int;
+                        schedulesService.docenteId = value;
+                      },
+                      decoration: _dropdownStyle(label: 'Profesor'),
+                    ),
+                  ),
+                  const Spacer(),
+                  MaterialButton(
+                    onPressed: schedulesService.selectedTeacherId != 0
+                        ? () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ScheduleForm2(
+                                  schedulesService: schedulesService,
+                                  teacherId: schedulesService.selectedTeacherId,
+                                );
+                              },
+                            );
+                          }
+                        : null,
+                    color: AppColors.vine,
+                    disabledColor: Colors.black26,
+                    height: 40,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Container(
+                      // color: AppColors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.add,
+                            color: AppColors.white,
+                          ),
+                          Text(
+                            'Nuevo',
+                            style: GoogleFonts.openSans(
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Aqui inicia la tabla
+            _DataTableSchedules(schedulesService: schedulesService),
+          ],
+        ),
+      ),
+    );
+  }
 
   InputDecoration _dropdownStyle({String? label}) {
     return InputDecoration(
@@ -63,111 +135,10 @@ class _TableState extends State<_Table> {
       ),
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final schedulesService = Provider.of<SchedulesService>(context);
-    final selectTeacherService = Provider.of<SelectTeacherService>(context);
-    return schedulesService.isLoading
-        ? const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.vine,
-            ),
-          )
-        : SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: DropdownButtonFormField(
-                          value: teacherId == 0 ? null : teacherId,
-                          items: selectTeacherService.teachers
-                              .map(
-                                (teacher) => DropdownMenuItem(
-                                  value: teacher.id,
-                                  child: Text(teacher.nombre),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              available = true;
-                            });
-                            setState(() {
-                              teacherId = value as int;
-                            });
-                            setState(() {
-                              teacherName = selectTeacherService.teachers
-                                  .firstWhere(
-                                      (teacher) => teacher.id == teacherId)
-                                  .nombre;
-                            });
-                            schedulesService
-                                .getSchedulesByTeacher(value as int);
-                          },
-                          decoration: _dropdownStyle(label: 'Docente'),
-                        ),
-                      ),
-                      const Spacer(),
-                      MaterialButton(
-                        onPressed: !available
-                            ? null
-                            : () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return ScheduleForm();
-                                  },
-                                );
-                              },
-                        color: AppColors.vine,
-                        disabledColor: Colors.black26,
-                        height: 40,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Container(
-                          // color: AppColors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.add,
-                                color: AppColors.white,
-                              ),
-                              Text(
-                                'Nuevo',
-                                style: GoogleFonts.openSans(
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                available
-                    ? _DataTable(schedulesService: schedulesService)
-                    : const SizedBox(),
-              ],
-            ),
-          );
-  }
 }
 
-class _DataTable extends StatelessWidget {
-  const _DataTable({
-    super.key,
+class _DataTableSchedules extends StatelessWidget {
+  const _DataTableSchedules({
     required this.schedulesService,
   });
 
@@ -191,48 +162,44 @@ class _DataTable extends StatelessWidget {
         ],
       ),
       child: DataTable(
-        showCheckboxColumn: false,
-        columnSpacing: 20,
-        headingTextStyle: GoogleFonts.openSans(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: AppColors.black,
-        ),
-        dividerThickness: 0.2,
-        dataTextStyle: GoogleFonts.openSans(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-          color: AppColors.black,
-        ),
-        columns: const [
-          DataColumn(label: Text('Materia')),
-          DataColumn(label: Text('Carrera')),
-          DataColumn(label: Text('Nivel')),
-          DataColumn(label: Text('Dia')),
-          DataColumn(label: Text('Inicio')),
-          DataColumn(label: Text('Fin')),
-          DataColumn(label: Text('Laboratorio')),
-          DataColumn(label: Text('Acciones')),
-        ],
-        rows: [
-          for (final schedule in schedulesService.schedules)
-            DataRow(
-              onSelectChanged: (value) {},
+          showCheckboxColumn: false,
+          columnSpacing: 20,
+          headingTextStyle: GoogleFonts.openSans(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black,
+          ),
+          dividerThickness: 0.2,
+          dataTextStyle: GoogleFonts.openSans(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
+          columns: const [
+            DataColumn(label: Text('Materia')),
+            DataColumn(label: Text('Carrera')),
+            DataColumn(label: Text('Nivel')),
+            DataColumn(label: Text('Dia')),
+            DataColumn(label: Text('Inicio')),
+            DataColumn(label: Text('Fin')),
+            DataColumn(label: Text('Laboratorio')),
+            DataColumn(label: Text('Acciones')),
+          ],
+          rows: schedulesService.schedules.map((schedule) {
+            return DataRow(
               cells: [
                 DataCell(Text(schedule.actividad)),
                 DataCell(Text(schedule.carrera)),
-                DataCell(Text('${schedule.nivel} ${schedule.paralelo}')),
+                DataCell(Text(schedule.nivel)),
                 DataCell(Text(schedule.diaSemana)),
-                DataCell(Text('${schedule.horaInicio}:00')),
-                DataCell(Text('${schedule.horaFin}:00')),
+                DataCell(Text(schedule.horaInicio)),
+                DataCell(Text(schedule.horaFin)),
                 DataCell(Text(schedule.aulaPuestoInfo)),
                 DataCell(
                   Row(
                     children: [
                       IconButton(
-                        tooltip: 'Eliminar',
                         onPressed: () {
-                          //Dialogo para mostrar confirmacion de eliminar
                           showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
@@ -252,7 +219,11 @@ class _DataTable extends StatelessWidget {
                                   ),
                                 ),
                                 MaterialButton(
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    await schedulesService
+                                        .deleteSchedule(schedule.id);
+                                    Navigator.of(context).pop();
+                                  },
                                   color: AppColors.vine,
                                   child: const Text(
                                     'Eliminar',
@@ -265,15 +236,17 @@ class _DataTable extends StatelessWidget {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.delete),
+                        icon: const Icon(
+                          Icons.delete,
+                          color: AppColors.vine,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ],
-            ),
-        ],
-      ),
+            );
+          }).toList()),
     );
   }
 }

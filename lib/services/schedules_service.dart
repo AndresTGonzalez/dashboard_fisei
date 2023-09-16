@@ -10,6 +10,33 @@ class SchedulesService extends ChangeNotifier {
 
   bool isLoading = false;
 
+  int _selectedTeacherId = 0;
+  bool _isPosition = false;
+
+  int aulaId = 0;
+  int docenteId = 0;
+  int actividadId = 0;
+  int paraleloId = 0;
+  String horaInicio = '';
+  String horaFin = '';
+  String numeroPuesto = '';
+  int numeroDia = 0;
+
+  set selectedTeacherId(int value) {
+    _selectedTeacherId = value;
+    getSchedulesByTeacher(value);
+    notifyListeners();
+  }
+
+  int get selectedTeacherId => _selectedTeacherId;
+
+  set isPosition(bool value) {
+    _isPosition = value;
+    notifyListeners();
+  }
+
+  bool get isPosition => _isPosition;
+
   // Ordenar los horarios por dia luego por hora de inicio
   void sortSchedules() {
     schedules.sort((a, b) {
@@ -26,12 +53,10 @@ class SchedulesService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     schedules.clear();
-    print('getSchedulesByTeacher');
     final url = Uri.parse('${API.BASE_URL}docente/$id');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print(data);
       final schedulesData = data['horarioInfo'];
       schedulesData.forEach((schedule) {
         final scheduleTemp = HorarioInfo.fromJson(schedule);
@@ -41,9 +66,63 @@ class SchedulesService extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } else {
+      print('Error');
+    }
+  }
+
+  Future deleteSchedule(int id) async {
+    isLoading = true;
+    notifyListeners();
+    final url = Uri.parse('${API.BASE_URL}horarios/$id');
+    final response = await http.delete(url);
+    if (response.statusCode == 200) {
+      schedules.removeWhere((schedule) => schedule.id == id);
       isLoading = false;
       notifyListeners();
-      print('Error');
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future addSchedule({
+    int? aulaId,
+    int? docenteId,
+    int? actividadId,
+    int? paraleloId,
+    String? horaInicio,
+    String? horaFin,
+    String numeroPuesto = '',
+    int? numeroDia,
+  }) async {
+    isLoading = true;
+    notifyListeners();
+    final url = Uri.parse('${API.BASE_URL}horarios');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'aula_id': aulaId,
+          'docente_id': docenteId,
+          'actividad_id': actividadId,
+          'paralelo_id': paraleloId,
+          'hora_inicio': horaInicio,
+          'hora_fin': horaFin,
+          'numero_puesto': numeroPuesto,
+          'numero_dia': numeroDia,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final scheduleTemp = HorarioInfo.fromJson(data);
+      schedules.add(scheduleTemp);
+      print(scheduleTemp.numeroDia);
+      sortSchedules();
+      isLoading = false;
+      notifyListeners();
+    } else {
+      print(response.body);
     }
   }
 }

@@ -1,5 +1,5 @@
 class SelectHour {
-  int value;
+  String value;
   String hour;
 
   SelectHour({
