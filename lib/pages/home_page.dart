@@ -3,6 +3,7 @@ import 'package:dashboard_fisei/forms/laboratory_form.dart';
 import 'package:dashboard_fisei/forms/schedule_form.dart';
 import 'package:dashboard_fisei/forms/software_form.dart';
 import 'package:dashboard_fisei/forms/subjects_form.dart';
+import 'package:dashboard_fisei/info_dialogs/software_dialog.dart';
 import 'package:dashboard_fisei/models/select_carrer.dart';
 import 'package:dashboard_fisei/models/select_nivel.dart';
 import 'package:dashboard_fisei/models/subjects.dart';
@@ -61,9 +62,16 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             MaterialButton(
               color: AppColors.black,
-              onPressed: () {},
+              onPressed: () {
+                // showDialog(
+                //   context: context,
+                //   builder: (context) {
+                //     return SoftwareDialog();
+                //   },
+                // );
+              },
               child: const Text(
-                'Formulario de materias',
+                'Software',
                 style: TextStyle(
                   color: AppColors.white,
                 ),

@@ -22,15 +22,15 @@ class Software {
   final int id;
   final String nombre;
   final String version;
-  final String createdAt;
-  final String updatedAt;
+  final String? createdAt;
+  final String? updatedAt;
 
   Software({
     required this.id,
     required this.nombre,
     required this.version,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory Software.fromJson(Map<String, dynamic> json) {

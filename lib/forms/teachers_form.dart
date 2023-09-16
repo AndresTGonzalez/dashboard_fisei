@@ -21,7 +21,8 @@ class TeacherFormDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        'Agregar o editar Docente',
+        // 'Agregar o editar Docente',
+        teacher.id == 0 ? 'Agregar docente' : 'Editar docente',
         style: GoogleFonts.openSans(
           color: AppColors.black,
           fontWeight: FontWeight.w600,

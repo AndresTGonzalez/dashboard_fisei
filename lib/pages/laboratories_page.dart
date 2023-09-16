@@ -1,5 +1,7 @@
 import 'package:dashboard_fisei/constants/constants.dart';
 import 'package:dashboard_fisei/forms/laboratory_form.dart';
+import 'package:dashboard_fisei/info_dialogs/charactersitic_dialog.dart';
+import 'package:dashboard_fisei/info_dialogs/software_dialog.dart';
 import 'package:dashboard_fisei/models/laboratory.dart';
 import 'package:dashboard_fisei/services/laboratories_service.dart';
 import 'package:flutter/material.dart';
@@ -270,12 +272,30 @@ class _DataTable extends StatelessWidget {
                       ),
                       IconButton(
                         tooltip: 'Software',
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return SoftwareDialog(
+                                softwares: laboratory.softwares!,
+                              );
+                            },
+                          );
+                        },
                         icon: const Icon(Icons.developer_mode),
                       ),
                       IconButton(
                         tooltip: 'Características',
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CharacteristicDialog(
+                                caracteristicas: laboratory.caracteristicas!,
+                              );
+                            },
+                          );
+                        },
                         icon: const Icon(Icons.table_rows_rounded),
                       ),
                     ],

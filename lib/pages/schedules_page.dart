@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/forms/schedule_form.dart';
 import 'package:dashboard_fisei/services/schedules_service.dart';
 import 'package:dashboard_fisei/services/select_teacher_service.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,16 @@ class _TableState extends State<_Table> {
                       ),
                       const Spacer(),
                       MaterialButton(
-                        onPressed: !available ? null : () {},
+                        onPressed: !available
+                            ? null
+                            : () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ScheduleForm();
+                                  },
+                                );
+                              },
                         color: AppColors.vine,
                         disabledColor: Colors.black26,
                         height: 40,
@@ -220,11 +230,6 @@ class _DataTable extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
-                        tooltip: 'Editar',
-                        onPressed: () {},
-                        icon: const Icon(Icons.edit),
-                      ),
-                      IconButton(
                         tooltip: 'Eliminar',
                         onPressed: () {
                           //Dialogo para mostrar confirmacion de eliminar
@@ -233,7 +238,7 @@ class _DataTable extends StatelessWidget {
                             builder: (_) => AlertDialog(
                               title: const Text('Eliminar'),
                               content: const Text(
-                                  '¿Está seguro que desea eliminar este docente?'),
+                                  '¿Está seguro que desea eliminar este horario?'),
                               actions: [
                                 TextButton(
                                   onPressed: () {

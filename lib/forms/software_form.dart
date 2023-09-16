@@ -1,9 +1,13 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/models/laboratory.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SoftwareForm extends StatelessWidget {
-  SoftwareForm({
+  final Software software;
+
+  const SoftwareForm({
+    required this.software,
     super.key,
   });
 
@@ -14,7 +18,8 @@ class SoftwareForm extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        'Agregar o editar Software',
+        // 'Agregar o editar Software',
+        software.id == 0 ? 'Agregar software' : 'Editar software',
         style: GoogleFonts.openSans(
           color: AppColors.black,
           fontWeight: FontWeight.w600,
@@ -24,18 +29,15 @@ class SoftwareForm extends StatelessWidget {
       scrollable: true,
       content: Form(
         child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.4,
           child: Column(
             children: [
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: TextFormField(
-                  // initialValue: teacher.cedula,
-                  // enabled: teacher.id == 0,
-                  onChanged: (value) {
-                    // teachersService.cedula = value;
-                  },
+                  initialValue: software.nombre,
+                  onChanged: (value) {},
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -60,8 +62,9 @@ class SoftwareForm extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.4,
                 child: TextFormField(
+                  initialValue: software.version,
                   // initialValue: teacher.nombre,
                   // onChanged: (value) => teachersService.nombre = value,
                   cursorColor: AppColors.black,

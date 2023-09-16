@@ -50,7 +50,8 @@ class LaboratoryForm extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        'Agregar o editar Laboratorio',
+        // 'Agregar o editar Laboratorio',
+        aula.id == 0 ? 'Agregar laboratorio' : 'Editar laboratorio',
         style: GoogleFonts.openSans(
           color: AppColors.black,
           fontWeight: FontWeight.w600,

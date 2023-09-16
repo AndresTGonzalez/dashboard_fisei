@@ -48,7 +48,8 @@ class SubjectsForm extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        'Agregar o editar Materias',
+        // 'Agregar o editar Materias',
+        materia.id == 0 ? 'Agregar materia' : 'Editar materia',
         style: GoogleFonts.openSans(
           color: AppColors.black,
           fontWeight: FontWeight.w600,

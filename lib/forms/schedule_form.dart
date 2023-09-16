@@ -128,21 +128,21 @@ class _FormState extends State<_Form> {
   ];
 
   List<SelectHour> hours = [
-    SelectHour(value: '07:00', hour: '07H00'),
-    SelectHour(value: '08:00', hour: '08H00'),
-    SelectHour(value: '09:00', hour: '09H00'),
-    SelectHour(value: '10:00', hour: '10H00'),
-    SelectHour(value: '11:00', hour: '11H00'),
-    SelectHour(value: '12:00', hour: '12H00'),
-    SelectHour(value: '13:00', hour: '13H00'),
-    SelectHour(value: '14:00', hour: '14H00'),
-    SelectHour(value: '15:00', hour: '15H00'),
-    SelectHour(value: '16:00', hour: '16H00'),
-    SelectHour(value: '17:00', hour: '17H00'),
-    SelectHour(value: '18:00', hour: '18H00'),
-    SelectHour(value: '19:00', hour: '19H00'),
-    SelectHour(value: '20:00', hour: '20H00'),
-    SelectHour(value: '21:00', hour: '21H00')
+    SelectHour(value: 7, hour: '07H00'),
+    SelectHour(value: 8, hour: '08H00'),
+    SelectHour(value: 9, hour: '09H00'),
+    SelectHour(value: 10, hour: '10H00'),
+    SelectHour(value: 11, hour: '11H00'),
+    SelectHour(value: 12, hour: '12H00'),
+    SelectHour(value: 13, hour: '13H00'),
+    SelectHour(value: 14, hour: '14H00'),
+    SelectHour(value: 15, hour: '15H00'),
+    SelectHour(value: 16, hour: '16H00'),
+    SelectHour(value: 17, hour: '17H00'),
+    SelectHour(value: 18, hour: '18H00'),
+    SelectHour(value: 19, hour: '19H00'),
+    SelectHour(value: 20, hour: '20H00'),
+    SelectHour(value: 21, hour: '21H00')
   ];
 
   List<SelectParallel> parallels = [
@@ -279,12 +279,15 @@ class _FormState extends State<_Form> {
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.2,
                             child: SizedBox(
-                              child: Text(
-                                e.carrera,
-                                style: GoogleFonts.openSans(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.18,
+                                child: Text(
+                                  e.carrera,
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                             ),
@@ -311,8 +314,8 @@ class _FormState extends State<_Form> {
                       .map(
                         (e) => DropdownMenuItem(
                           value: e.value,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.2,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.18,
                             child: Text(
                               e.subject,
                               style: GoogleFonts.openSans(
@@ -342,12 +345,15 @@ class _FormState extends State<_Form> {
                       .map(
                         (e) => DropdownMenuItem(
                           value: e.id,
-                          child: Text(
-                            e.nombre,
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            child: Text(
+                              e.nombre,
+                              style: GoogleFonts.openSans(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
@@ -392,12 +398,15 @@ class _FormState extends State<_Form> {
                       .map(
                         (e) => DropdownMenuItem(
                           value: e.value,
-                          child: Text(
-                            e.laboratory,
-                            style: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.18,
+                            child: Text(
+                              e.laboratory,
+                              style: GoogleFonts.openSans(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ),
