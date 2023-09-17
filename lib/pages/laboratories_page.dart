@@ -14,8 +14,12 @@ class LaboratoriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (_) => LaboratoriesService(),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<LaboratoriesService>(
+            create: (_) => LaboratoriesService(),
+          ),
+        ],
         child: const _Table(),
       ),
     );
@@ -91,7 +95,9 @@ class _Table extends StatelessWidget {
                     ],
                   ),
                 ),
-                _DataTable(laboratoriesService: laboratoriesService),
+                _DataTable(
+                  laboratoriesService: laboratoriesService,
+                ),
               ],
             ),
           );
@@ -277,6 +283,7 @@ class _DataTable extends StatelessWidget {
                             context: context,
                             builder: (context) {
                               return SoftwareDialog(
+                                laboratoryId: laboratory.id!,
                                 softwares: laboratory.softwares!,
                               );
                             },
@@ -292,6 +299,7 @@ class _DataTable extends StatelessWidget {
                             builder: (context) {
                               return CharacteristicDialog(
                                 caracteristicas: laboratory.caracteristicas!,
+                                laboratoryId: laboratory.id!,
                               );
                             },
                           );

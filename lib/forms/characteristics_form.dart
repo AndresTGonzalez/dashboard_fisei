@@ -1,13 +1,18 @@
 import 'package:dashboard_fisei/constants/constants.dart';
 import 'package:dashboard_fisei/models/laboratory.dart';
+import 'package:dashboard_fisei/services/characteristic_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CharacteristicsForm extends StatelessWidget {
   final Caracteristica caracteristica;
+  final CharacteristicService characteristicService;
+  final int? laboratoryId;
 
-  CharacteristicsForm({
+  const CharacteristicsForm({
+    required this.characteristicService,
     required this.caracteristica,
+    required this.laboratoryId,
     super.key,
   });
 
@@ -39,10 +44,8 @@ class CharacteristicsForm extends StatelessWidget {
                 width: double.infinity,
                 child: TextFormField(
                   initialValue: caracteristica.nombre,
-                  // initialValue: teacher.cedula,
-                  // enabled: teacher.id == 0,
                   onChanged: (value) {
-                    // teachersService.cedula = value;
+                    characteristicService.nombre = value;
                   },
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
@@ -71,6 +74,8 @@ class CharacteristicsForm extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: TextFormField(
                   initialValue: caracteristica.descripcion,
+                  onChanged: (value) =>
+                      characteristicService.descripcion = value,
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -115,7 +120,19 @@ class CharacteristicsForm extends StatelessWidget {
           },
         ),
         MaterialButton(
-          onPressed: () async {},
+          onPressed: () async {
+            if (caracteristica.id == 0) {
+              await characteristicService.addCharacteristic(
+                laboratoryId: laboratoryId,
+              );
+              Navigator.of(context).pop();
+            } else {
+              await characteristicService.updateCharacteristic(
+                characteristicId: caracteristica.id,
+              );
+              Navigator.of(context).pop();
+            }
+          },
           color: AppColors.green,
           height: 40,
           shape: RoundedRectangleBorder(

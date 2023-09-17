@@ -1,20 +1,45 @@
 import 'package:dashboard_fisei/constants/app_colors.dart';
 import 'package:dashboard_fisei/forms/characteristics_form.dart';
-import 'package:dashboard_fisei/forms/software_form.dart';
 import 'package:dashboard_fisei/models/laboratory.dart';
+import 'package:dashboard_fisei/services/characteristic_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class CharacteristicDialog extends StatelessWidget {
   final List<Caracteristica> caracteristicas;
+  final int? laboratoryId;
 
   const CharacteristicDialog({
     required this.caracteristicas,
+    required this.laboratoryId,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => CharacteristicService(
+        caracteristicas: caracteristicas,
+      ),
+      child: _Dialog(
+        laboratoryId: laboratoryId,
+      ),
+    );
+  }
+}
+
+class _Dialog extends StatelessWidget {
+  final int? laboratoryId;
+
+  const _Dialog({
+    required this.laboratoryId,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final characteristicService = Provider.of<CharacteristicService>(context);
     return AlertDialog(
       title: Row(
         children: [
@@ -29,15 +54,19 @@ class CharacteristicDialog extends StatelessWidget {
           const Spacer(),
           IconButton(
             onPressed: () {
+              characteristicService.nombre = '';
+              characteristicService.descripcion = '';
               showDialog(
                 context: context,
                 builder: (context) {
                   return CharacteristicsForm(
+                    laboratoryId: laboratoryId,
                     caracteristica: Caracteristica(
                       id: 0,
                       nombre: '',
                       descripcion: '',
                     ),
+                    characteristicService: characteristicService,
                   );
                 },
               );
@@ -54,7 +83,7 @@ class CharacteristicDialog extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.5,
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: caracteristicas.length,
+                itemCount: characteristicService.caracteristicas.length,
                 itemBuilder: (context, index) {
                   return Container(
                     width: MediaQuery.of(context).size.width * 0.4,
@@ -69,7 +98,8 @@ class CharacteristicDialog extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.3,
                               child: Text(
-                                caracteristicas[index].nombre,
+                                characteristicService
+                                    .caracteristicas[index].nombre,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.openSans(
@@ -82,7 +112,8 @@ class CharacteristicDialog extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.3,
                               child: Text(
-                                caracteristicas[index].descripcion,
+                                characteristicService
+                                    .caracteristicas[index].descripcion,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.openSans(
@@ -100,11 +131,22 @@ class CharacteristicDialog extends StatelessWidget {
                             IconButton(
                               tooltip: 'Editar',
                               onPressed: () {
+                                characteristicService.nombre =
+                                    characteristicService
+                                        .caracteristicas[index].nombre;
+                                characteristicService.descripcion =
+                                    characteristicService
+                                        .caracteristicas[index].descripcion;
                                 showDialog(
                                   context: context,
                                   builder: (context) {
                                     return CharacteristicsForm(
-                                        caracteristica: caracteristicas[index]);
+                                      laboratoryId: laboratoryId,
+                                      caracteristica: characteristicService
+                                          .caracteristicas[index],
+                                      characteristicService:
+                                          characteristicService,
+                                    );
                                   },
                                 );
                               },
@@ -112,7 +154,48 @@ class CharacteristicDialog extends StatelessWidget {
                             ),
                             IconButton(
                               tooltip: 'Eliminar',
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                    title: const Text('Eliminar'),
+                                    content: const Text(
+                                        '¿Está seguro que desea eliminar este laboratorio?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text(
+                                          'Cancelar',
+                                          style: TextStyle(
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        onPressed: () async {
+                                          await characteristicService
+                                              .deleteCharacteristic(
+                                            characteristicId:
+                                                characteristicService
+                                                    .caracteristicas[index].id,
+                                          );
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.of(context).pop();
+                                        },
+                                        color: AppColors.vine,
+                                        child: const Text(
+                                          'Eliminar',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                               icon: const Icon(Icons.delete),
                             ),
                           ],

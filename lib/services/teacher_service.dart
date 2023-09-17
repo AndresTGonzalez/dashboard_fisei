@@ -32,7 +32,6 @@ class TeachersService extends ChangeNotifier {
     } else {
       isLoading = false;
       notifyListeners();
-      // print(response.body);
     }
   }
 

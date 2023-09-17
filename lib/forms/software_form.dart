@@ -1,13 +1,16 @@
 import 'package:dashboard_fisei/constants/constants.dart';
 import 'package:dashboard_fisei/models/laboratory.dart';
+import 'package:dashboard_fisei/services/software_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SoftwareForm extends StatelessWidget {
   final Software software;
+  final SoftwareService softwareService;
 
   const SoftwareForm({
     required this.software,
+    required this.softwareService,
     super.key,
   });
 
@@ -18,7 +21,6 @@ class SoftwareForm extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        // 'Agregar o editar Software',
         software.id == 0 ? 'Agregar software' : 'Editar software',
         style: GoogleFonts.openSans(
           color: AppColors.black,
@@ -36,8 +38,10 @@ class SoftwareForm extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: TextFormField(
-                  initialValue: software.nombre,
-                  onChanged: (value) {},
+                  initialValue: softwareService.nombre,
+                  onChanged: (value) {
+                    softwareService.nombre = value;
+                  },
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -64,9 +68,10 @@ class SoftwareForm extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: TextFormField(
-                  initialValue: software.version,
-                  // initialValue: teacher.nombre,
-                  // onChanged: (value) => teachersService.nombre = value,
+                  initialValue: softwareService.version,
+                  onChanged: (value) {
+                    softwareService.version = value;
+                  },
                   cursorColor: AppColors.black,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -111,7 +116,23 @@ class SoftwareForm extends StatelessWidget {
           },
         ),
         MaterialButton(
-          onPressed: () async {},
+          onPressed: () async {
+            if (software.id != 0) {
+              await softwareService.updateSoftware(
+                software: software,
+                laboratoryId: softwareService.laboratoryId,
+              );
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+            } else {
+              await softwareService.addSoftware(
+                software: software,
+                laboratoryId: softwareService.laboratoryId,
+              );
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).pop();
+            }
+          },
           color: AppColors.green,
           height: 40,
           shape: RoundedRectangleBorder(

@@ -50,11 +50,8 @@ class SubjectsService extends ChangeNotifier {
         },
       ),
     );
-    print(response.body);
     if (response.statusCode == 200) {
-      print(response.body);
       final jsonData = jsonDecode(response.body);
-      print(jsonData);
       var nombre = jsonData['nombre'];
       var nivel = jsonData['nivel'];
       var idCarrera = jsonData['id_carrera'];
