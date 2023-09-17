@@ -61,8 +61,18 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         onPressed: () async {
-                          var bytes = await GenerateControllSheet
-                              .generateControllSheet();
+                          var bytes =
+                              await GenerateControllSheet.generateControllSheet(
+                            carrera: 'Software',
+                            docente: 'Juan Perez',
+                            laboratorio: 'Laboratorio 1',
+                            auxiliar: 'Pedro Perez',
+                            periodo: '2021-1',
+                            nivel: '1',
+                            ingreso: '10H00',
+                            salida: '12H00',
+                            materia: 'Programación 1',
+                          );
                         },
                         child: Text(
                           'Por laboratorio',

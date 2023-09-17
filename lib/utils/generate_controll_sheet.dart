@@ -1,10 +1,21 @@
+import 'package:dashboard_fisei/utils/selector_static_options.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 class GenerateControllSheet {
-  static Future generateControllSheet() async {
+  static Future generateControllSheet({
+    String carrera = '',
+    String laboratorio = '',
+    String docente = '',
+    String auxiliar = '',
+    String periodo = '',
+    String nivel = '',
+    String ingreso = '',
+    String salida = '',
+    String materia = '',
+  }) async {
     final pdf = pw.Document();
     final font = await PdfGoogleFonts.merriweatherRegular();
     final fontBold = await PdfGoogleFonts.merriweatherBold();
@@ -15,19 +26,45 @@ class GenerateControllSheet {
         await rootBundle.load('assets/images/fisei.png');
     Uint8List fisei = (imageFISEI).buffer.asUint8List();
 
-    const String carrera = 'Ingeniería en Sistemas';
-
-    for (var i = 0; i < 10; i++) {
-      _generatePage(pdf, font, carrera, escudo, fisei, fontBold);
-    }
+    // Aqui llamo el metodo para generar una pagina
+    _generatePage(
+      pdf: pdf,
+      font: font,
+      escudo: escudo,
+      fisei: fisei,
+      fontBold: fontBold,
+      carrera: carrera,
+      laboratorio: laboratorio,
+      docente: docente,
+      auxiliar: auxiliar,
+      periodo: periodo,
+      nivel: nivel,
+      ingreso: ingreso,
+      salida: salida,
+      materia: materia,
+    );
 
     final bytes = await pdf.save();
     await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => bytes);
   }
 
-  static void _generatePage(pw.Document pdf, pw.Font font, String carrera,
-      Uint8List escudo, Uint8List fisei, pw.Font fontBold) {
-    return pdf.addPage(
+  static void _generatePage({
+    pw.Document? pdf,
+    pw.Font? font,
+    Uint8List? escudo,
+    Uint8List? fisei,
+    pw.Font? fontBold,
+    String carrera = '',
+    String laboratorio = '',
+    String docente = '',
+    String auxiliar = '',
+    String periodo = '',
+    String nivel = '',
+    String ingreso = '',
+    String salida = '',
+    String materia = '',
+  }) {
+    return pdf!.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a5,
         margin:
@@ -39,8 +76,21 @@ class GenerateControllSheet {
             height: double.infinity,
             child: pw.Column(
               children: [
-                _header(font, carrera, escudo, fisei),
-                _details(font, availableWidth, carrera),
+                _header(font, carrera, escudo!, fisei!),
+                _details(
+                  font: font,
+                  fontBold: fontBold,
+                  availableWidth: availableWidth,
+                  carrera: carrera,
+                  laboratorio: laboratorio,
+                  docente: docente,
+                  auxiliar: auxiliar,
+                  periodo: periodo,
+                  nivel: nivel,
+                  ingreso: ingreso,
+                  salida: salida,
+                  materia: materia,
+                ),
                 pw.Container(
                   width: double.infinity,
                   child: pw.Text(
@@ -57,7 +107,11 @@ class GenerateControllSheet {
                 _tableHeaders(
                   font,
                 ),
-                for (var i = 0; i < 20; i++) _tableRow(i, font),
+                for (var i = 0; i < 20; i++)
+                  _tableRow(
+                    index: i,
+                    font: font,
+                  ),
                 pw.SizedBox(height: 20),
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -184,7 +238,10 @@ class GenerateControllSheet {
     );
   }
 
-  static pw.Row _tableRow(int index, dynamic font) {
+  static pw.Row _tableRow({
+    int index = 0,
+    dynamic font,
+  }) {
     return pw.Row(
       children: [
         pw.Container(
@@ -249,8 +306,20 @@ class GenerateControllSheet {
     );
   }
 
-  static pw.Container _details(
-      dynamic font, double availableWidth, String carrera) {
+  static pw.Container _details({
+    dynamic font,
+    dynamic fontBold,
+    double availableWidth = 0.0,
+    String carrera = '',
+    String laboratorio = '',
+    String docente = '',
+    String auxiliar = '',
+    String periodo = '',
+    String nivel = '',
+    String ingreso = '',
+    String salida = '',
+    String materia = '',
+  }) {
     DateTime now = DateTime.now();
 
     return pw.Container(
@@ -264,16 +333,16 @@ class GenerateControllSheet {
                 'LABORATORIO: ',
                 style: pw.TextStyle(
                   fontSize: 6.5,
-                  font: font,
+                  font: fontBold,
                   color: PdfColors.black,
                 ),
               ),
               pw.Container(
-                width: availableWidth / 3,
+                width: availableWidth / 3.75,
                 height: 15,
                 alignment: pw.Alignment.centerLeft,
                 child: pw.Text(
-                  'Lab. Robótica y Redes Industriales'.toUpperCase(),
+                  laboratorio.toUpperCase(),
                   maxLines: 2,
                   overflow: pw.TextOverflow.clip,
                   style: pw.TextStyle(
@@ -283,12 +352,11 @@ class GenerateControllSheet {
                   ),
                 ),
               ),
-              pw.SizedBox(width: 5),
               pw.Text(
                 'DOCENTE: ',
                 style: pw.TextStyle(
                   fontSize: 6.5,
-                  font: font,
+                  font: fontBold,
                   color: PdfColors.black,
                 ),
               ),
@@ -297,7 +365,7 @@ class GenerateControllSheet {
                 height: 15,
                 alignment: pw.Alignment.centerLeft,
                 child: pw.Text(
-                  'CARLOS NUÑEZ',
+                  docente.toUpperCase(),
                   maxLines: 2,
                   overflow: pw.TextOverflow.clip,
                   style: pw.TextStyle(
@@ -315,16 +383,16 @@ class GenerateControllSheet {
                 'AUXILIAR DE LABORATORIO: ',
                 style: pw.TextStyle(
                   fontSize: 6.5,
-                  font: font,
+                  font: fontBold,
                   color: PdfColors.black,
                 ),
               ),
               pw.Container(
-                width: availableWidth / 3.5,
+                width: availableWidth / 5,
                 height: 15,
                 alignment: pw.Alignment.centerLeft,
                 child: pw.Text(
-                  'ALEXANDRA BARRIONUEVO',
+                  auxiliar.toUpperCase(),
                   maxLines: 2,
                   overflow: pw.TextOverflow.clip,
                   style: pw.TextStyle(
@@ -335,7 +403,7 @@ class GenerateControllSheet {
                 ),
               ),
               pw.Text(
-                'PERIODO ACADÉMICO ABRIL-AGOSTO 2021',
+                'PERIODO ACADÉMICO ${periodo.toUpperCase()}',
                 style: pw.TextStyle(
                   fontSize: 6.5,
                   font: font,
@@ -350,7 +418,7 @@ class GenerateControllSheet {
                 'NIVEL: ',
                 style: pw.TextStyle(
                   fontSize: 6.5,
-                  font: font,
+                  font: fontBold,
                   color: PdfColors.black,
                 ),
               ),
@@ -359,7 +427,7 @@ class GenerateControllSheet {
                 height: 15,
                 alignment: pw.Alignment.centerLeft,
                 child: pw.Text(
-                  'Primero A',
+                  nivel.toUpperCase(),
                   maxLines: 2,
                   overflow: pw.TextOverflow.clip,
                   style: pw.TextStyle(
@@ -371,10 +439,10 @@ class GenerateControllSheet {
               ),
               pw.SizedBox(width: 20),
               pw.Text(
-                'FECHA: ${now.day}/${now.month}/${now.year}',
+                'FECHA: ${now.day} del ${SelectorStaticOptions.meses[now.month - 1]} de ${now.year}',
                 style: pw.TextStyle(
                   fontSize: 6.5,
-                  font: font,
+                  font: fontBold,
                   color: PdfColors.black,
                 ),
               ),
@@ -393,7 +461,7 @@ class GenerateControllSheet {
                       'H.INGRESO: ',
                       style: pw.TextStyle(
                         fontSize: 6.5,
-                        font: font,
+                        font: fontBold,
                         color: PdfColors.black,
                       ),
                     ),
@@ -402,7 +470,7 @@ class GenerateControllSheet {
                       height: 15,
                       alignment: pw.Alignment.centerLeft,
                       child: pw.Text(
-                        '07:00',
+                        ingreso.toUpperCase(),
                         maxLines: 2,
                         overflow: pw.TextOverflow.clip,
                         style: pw.TextStyle(
@@ -424,7 +492,7 @@ class GenerateControllSheet {
                       'H.SALIDA: ',
                       style: pw.TextStyle(
                         fontSize: 6.5,
-                        font: font,
+                        font: fontBold,
                         color: PdfColors.black,
                       ),
                     ),
@@ -433,7 +501,7 @@ class GenerateControllSheet {
                       height: 15,
                       alignment: pw.Alignment.centerLeft,
                       child: pw.Text(
-                        '07:00',
+                        salida.toUpperCase(),
                         maxLines: 2,
                         overflow: pw.TextOverflow.clip,
                         style: pw.TextStyle(
@@ -456,7 +524,7 @@ class GenerateControllSheet {
                       'H.PRÁCTICAS: ',
                       style: pw.TextStyle(
                         fontSize: 6.5,
-                        font: font,
+                        font: fontBold,
                         color: PdfColors.black,
                       ),
                     ),
@@ -492,7 +560,7 @@ class GenerateControllSheet {
                       'MATERIA: ',
                       style: pw.TextStyle(
                         fontSize: 6.5,
-                        font: font,
+                        font: fontBold,
                         color: PdfColors.black,
                       ),
                     ),
@@ -501,7 +569,7 @@ class GenerateControllSheet {
                       height: 15,
                       alignment: pw.Alignment.centerLeft,
                       child: pw.Text(
-                        'Fundamentos de la Ingeniería de Software',
+                        materia.toUpperCase(),
                         maxLines: 2,
                         overflow: pw.TextOverflow.clip,
                         style: pw.TextStyle(
@@ -524,7 +592,7 @@ class GenerateControllSheet {
                       'TEMA DE LA PRÁCTICA: ',
                       style: pw.TextStyle(
                         fontSize: 6.5,
-                        font: font,
+                        font: fontBold,
                         color: PdfColors.black,
                       ),
                     ),
@@ -599,7 +667,7 @@ class GenerateControllSheet {
                 pw.Text(
                   'CARRERA DE ${carrera.toUpperCase()}',
                   style: pw.TextStyle(
-                    fontSize: 9,
+                    fontSize: 7,
                     font: font,
                     color: PdfColors.black,
                   ),

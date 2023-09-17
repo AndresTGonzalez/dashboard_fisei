@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/constants/constants.dart';
+import 'package:dashboard_fisei/providers/individual_sheet_provider.dart';
 import 'package:dashboard_fisei/services/select_laboratory_service.dart';
 import 'package:dashboard_fisei/services/select_subject_service.dart';
 import 'package:dashboard_fisei/services/select_teacher_service.dart';
@@ -19,6 +20,7 @@ class ControlSheetForm extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SelectLaboratoryService()),
         ChangeNotifierProvider(create: (_) => SelectTeacherService()),
         ChangeNotifierProvider(create: (_) => SelectSubjectService()),
+        ChangeNotifierProvider(create: (_) => IndividualSheetProvider()),
       ],
       child: const _Dialog(),
     );
@@ -36,6 +38,8 @@ class _Dialog extends StatelessWidget {
         Provider.of<SelectLaboratoryService>(context);
     final selectTeacherService = Provider.of<SelectTeacherService>(context);
     final selectSubjectService = Provider.of<SelectSubjectService>(context);
+    final individualSheetProvider =
+        Provider.of<IndividualSheetProvider>(context);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -81,6 +85,10 @@ class _Dialog extends StatelessWidget {
                       }).toList(),
                       onChanged: (value) {
                         selectSubjectService.selectCarrer = value as int;
+                        individualSheetProvider.carrera = SelectorStaticOptions
+                            .carreras
+                            .firstWhere((carr) => carr.id == value)
+                            .carrera;
                         selectSubjectService
                             .getSubjects(selectSubjectService.selectCarrer);
                       },
@@ -108,7 +116,9 @@ class _Dialog extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        individualSheetProvider.nivel = value as String;
+                      },
                       decoration: _dropdownStyle(label: 'Nivel'),
                     ),
                   ),
@@ -133,7 +143,9 @@ class _Dialog extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        individualSheetProvider.paralelo = value as String;
+                      },
                       decoration: _dropdownStyle(label: 'Paralelo'),
                     ),
                   ),
@@ -165,7 +177,9 @@ class _Dialog extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        individualSheetProvider.laboratorio = value as String;
+                      },
                       decoration: _dropdownStyle(label: 'Laboratorio'),
                     ),
                   ),
@@ -190,7 +204,9 @@ class _Dialog extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        individualSheetProvider.docente = value as String;
+                      },
                       decoration: _dropdownStyle(label: 'Docente'),
                     ),
                   ),
@@ -225,6 +241,7 @@ class _Dialog extends StatelessWidget {
                           ? null
                           : (value) {
                               // schedulesService.actividadId = value as int;
+                              individualSheetProvider.materia = value as String;
                             },
                       decoration: _dropdownStyle(label: 'Materia'),
                     ),
@@ -250,7 +267,9 @@ class _Dialog extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        individualSheetProvider.ingreso = value as String;
+                      },
                       decoration: _dropdownStyle(label: 'Inicio'),
                     ),
                   ),
@@ -275,7 +294,9 @@ class _Dialog extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        individualSheetProvider.salida = value as String;
+                      },
                       decoration: _dropdownStyle(label: 'Fin'),
                     ),
                   ),
@@ -314,7 +335,11 @@ class _Dialog extends StatelessWidget {
           },
         ),
         MaterialButton(
-          onPressed: () async {},
+          onPressed: () async {
+            await individualSheetProvider.generateSheet();
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pop();
+          },
           color: AppColors.green,
           height: 40,
           shape: RoundedRectangleBorder(

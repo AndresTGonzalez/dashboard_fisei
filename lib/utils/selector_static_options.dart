@@ -68,4 +68,19 @@ class SelectorStaticOptions {
     SelectNivel(value: 'Noveno', nivel: 'Noveno'),
     SelectNivel(value: 'Decimo', nivel: 'Decimo'),
   ];
+
+  static List<String> meses = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ];
 }
