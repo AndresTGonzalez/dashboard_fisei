@@ -1,6 +1,7 @@
 import 'package:dashboard_fisei/models/select_carrer.dart';
 import 'package:dashboard_fisei/models/select_day.dart';
 import 'package:dashboard_fisei/models/select_hour.dart';
+import 'package:dashboard_fisei/models/select_nivel.dart';
 import 'package:dashboard_fisei/models/select_parallel.dart';
 
 class SelectorStaticOptions {
@@ -40,9 +41,31 @@ class SelectorStaticOptions {
 
   static List<SelectCarrer> carreras = [
     SelectCarrer(id: 1, carrera: 'Software'),
-    SelectCarrer(id: 2, carrera: 'Telecomunicaciones'),
-    SelectCarrer(id: 3, carrera: 'Industrial'),
+    SelectCarrer(id: 2, carrera: 'Electrónica y Telecomunicaciones'),
+    SelectCarrer(id: 3, carrera: 'Ingeniería Industrial'),
     SelectCarrer(id: 4, carrera: 'Robótica'),
-    SelectCarrer(id: 5, carrera: 'TI'),
+    SelectCarrer(id: 5, carrera: 'Tecnologías de la Información'),
+  ];
+
+  static List<SelectCarrer> carrersSheet = [
+    SelectCarrer(id: 1, carrera: 'Software'),
+    SelectCarrer(id: 2, carrera: 'Tecnologías de la Información'),
+    SelectCarrer(id: 3, carrera: 'Ingeniería Industrial'),
+    SelectCarrer(id: 4, carrera: 'Electrónica y Telecomunicaciones'),
+    SelectCarrer(id: 5, carrera: 'Robótica'),
+  ];
+
+  static List<SelectNivel> niveles = [
+    SelectNivel(value: 'Nivelacion', nivel: 'Nivelación'),
+    SelectNivel(value: 'Primero', nivel: 'Primero'),
+    SelectNivel(value: 'Segundo', nivel: 'Segundo'),
+    SelectNivel(value: 'Tercero', nivel: 'Tercero'),
+    SelectNivel(value: 'Cuarto', nivel: 'Cuarto'),
+    SelectNivel(value: 'Quinto', nivel: 'Quinto'),
+    SelectNivel(value: 'Sexto', nivel: 'Sexto'),
+    SelectNivel(value: 'Septimo', nivel: 'Septimo'),
+    SelectNivel(value: 'Octavo', nivel: 'Octavo'),
+    SelectNivel(value: 'Noveno', nivel: 'Noveno'),
+    SelectNivel(value: 'Decimo', nivel: 'Decimo'),
   ];
 }

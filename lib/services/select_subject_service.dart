@@ -9,11 +9,18 @@ class SelectSubjectService extends ChangeNotifier {
   List<SelectSubject> selectSubjects = [];
 
   int _selectedCarrer = 0;
+  String _selectedSubject = '';
 
   int get selectCarrer => _selectedCarrer;
+  String get selectSubject => _selectedSubject;
 
   set selectCarrer(int value) {
     _selectedCarrer = value;
+    notifyListeners();
+  }
+
+  set selectSubject(String value) {
+    _selectedSubject = value;
     notifyListeners();
   }
 

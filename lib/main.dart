@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const Layout(),
+      initialRoute: '/dashboard',
+      routes: {
+        '/dashboard': (context) => const Layout(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
