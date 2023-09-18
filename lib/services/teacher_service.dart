@@ -92,7 +92,8 @@ class TeachersService extends ChangeNotifier {
   void search(String query) {
     searchTeachers = teachers
         .where((teacher) =>
-            teacher.nombre.toLowerCase().contains(query.toLowerCase()))
+            teacher.nombre.toLowerCase().contains(query.toLowerCase()) ||
+            teacher.cedula.toLowerCase().contains(query.toLowerCase()))
         .toList();
     notifyListeners();
   }

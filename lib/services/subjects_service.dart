@@ -124,10 +124,18 @@ class SubjectsService extends ChangeNotifier {
   }
 
   void search(String query) {
+    //Buscar por nombre y por carrera
     searchsSubjects = subjects
         .where((subject) =>
-            subject.nombre.toLowerCase().contains(query.toLowerCase()))
+            subject.nombre.toLowerCase().contains(query.toLowerCase()) ||
+            subject.carrera!.toLowerCase().contains(query.toLowerCase()))
         .toList();
     notifyListeners();
+
+    // searchsSubjects = subjects
+    //     .where((subject) =>
+    //         subject.nombre.toLowerCase().contains(query.toLowerCase()))
+    //     .toList();
+    // notifyListeners();
   }
 }

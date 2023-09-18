@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/layout.dart';
+import 'package:dashboard_fisei/pages/login_page.dart';
 import 'package:dashboard_fisei/utils/custom_scroll_behivor.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      initialRoute: '/dashboard',
+      initialRoute: '/login',
       routes: {
         '/dashboard': (context) => const Layout(),
+        '/login': (context) => const LoginPage(),
       },
       debugShowCheckedModeBanner: false,
     );

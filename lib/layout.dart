@@ -49,7 +49,9 @@ class _LayoutState extends State<Layout> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/login');
+            },
             icon: const Icon(
               Icons.logout,
               color: AppColors.white,
