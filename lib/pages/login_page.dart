@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/constants/app_colors.dart';
+import 'package:dashboard_fisei/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -107,7 +108,16 @@ class LoginPage extends StatelessWidget {
                         width: double.infinity,
                         height: 50,
                         child: MaterialButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            // Navigator.pushReplacementNamed(
+                            //     context, '/dashboard');
+                            // await AuthProvider.createAccount();
+                            await AuthProvider.signInWithMail(
+                              emailAddress: 'adminredesfisei@uta.edu.ec',
+                              password: 'AdminRedesFISEI2000',
+                            );
+                            await AuthProvider.testToken();
+                            // ignore: use_build_context_synchronously
                             Navigator.pushReplacementNamed(
                                 context, '/dashboard');
                           },

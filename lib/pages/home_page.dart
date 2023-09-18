@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/constants/app_colors.dart';
+import 'package:dashboard_fisei/forms/control_sheet_block_form.dart';
 import 'package:dashboard_fisei/forms/control_sheet_form.dart';
 import 'package:dashboard_fisei/utils/generate_controll_sheet.dart';
 import 'package:flutter/material.dart';
@@ -61,21 +62,15 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         onPressed: () async {
-                          var bytes =
-                              await GenerateControllSheet.generateControllSheet(
-                            carrera: 'Software',
-                            docente: 'Juan Perez',
-                            laboratorio: 'Laboratorio 1',
-                            auxiliar: 'Pedro Perez',
-                            periodo: '2021-1',
-                            nivel: '1',
-                            ingreso: '10H00',
-                            salida: '12H00',
-                            materia: 'Programación 1',
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ControlSheetBlockForm();
+                            },
                           );
                         },
                         child: Text(
-                          'Por laboratorio',
+                          'Por bloque',
                           style: GoogleFonts.openSans(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,

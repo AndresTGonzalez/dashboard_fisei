@@ -1,3 +1,4 @@
+import 'package:dashboard_fisei/models/select_block.dart';
 import 'package:dashboard_fisei/models/select_carrer.dart';
 import 'package:dashboard_fisei/models/select_day.dart';
 import 'package:dashboard_fisei/models/select_hour.dart';
@@ -82,5 +83,25 @@ class SelectorStaticOptions {
     'Octubre',
     'Noviembre',
     'Diciembre'
+  ];
+
+  static List<SelectBlock> bloques = [
+    SelectBlock(id: 1, name: 'Bloque 1'),
+    SelectBlock(id: 2, name: 'Bloque 2'),
+  ];
+
+  static List<String> auxiliaresBloque1 = [
+    'Javier Saltos',
+    'Alexandra Barrionuevo',
+  ];
+  static List<String> auxiliaresBloque2 = [
+    'Andrés Pinos',
+    'Jose Romero',
+  ];
+  static List<String> auxiliares = [
+    'Javier Saltos',
+    'Alexandra Barrionuevo',
+    'Andrés Pinos',
+    'Jose Romero',
   ];
 }

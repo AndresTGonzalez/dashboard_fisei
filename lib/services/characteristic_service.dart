@@ -39,6 +39,7 @@ class CharacteristicService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}caracteristicas');
     final response = await http.post(
       url,
+      headers: API.defaultHeaders,
       body: {
         'nombre': nombre,
         'descripcion': descripcion,
@@ -60,6 +61,7 @@ class CharacteristicService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}caracteristicas/$characteristicId');
     final response = await http.put(
       url,
+      headers: API.defaultHeaders,
       body: {
         'nombre': nombre,
         'descripcion': descripcion,
@@ -81,7 +83,10 @@ class CharacteristicService extends ChangeNotifier {
     required int characteristicId,
   }) async {
     final url = Uri.parse('${API.BASE_URL}caracteristicas/$characteristicId');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       caracteristicas.removeWhere(
         (caracteristica) => caracteristica.id == characteristicId,

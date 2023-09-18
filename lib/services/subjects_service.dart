@@ -23,7 +23,10 @@ class SubjectsService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}actividades');
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)['actividades'];
       subjects = jsonData.map((json) => Materia.fromJson(json)).toList();
@@ -41,7 +44,7 @@ class SubjectsService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}actividades');
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
       body: jsonEncode(
         {
           'nombre': materia.nombre,
@@ -76,7 +79,7 @@ class SubjectsService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}actividades/${materia.id}');
     final response = await http.put(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
       body: jsonEncode(
         {
           'nombre': materia.nombre,
@@ -113,7 +116,10 @@ class SubjectsService extends ChangeNotifier {
 
   Future deleteSubject(int id) async {
     final url = Uri.parse('${API.BASE_URL}actividades/$id');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       subjects.removeWhere((subject) => subject.id == id);
       searchsSubjects = subjects;
@@ -131,11 +137,5 @@ class SubjectsService extends ChangeNotifier {
             subject.carrera!.toLowerCase().contains(query.toLowerCase()))
         .toList();
     notifyListeners();
-
-    // searchsSubjects = subjects
-    //     .where((subject) =>
-    //         subject.nombre.toLowerCase().contains(query.toLowerCase()))
-    //     .toList();
-    // notifyListeners();
   }
 }

@@ -30,7 +30,10 @@ class LaboratoriesService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}aulas');
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)['aulas'];
       laboratories = jsonData.map((json) => Aula.fromJson(json)).toList();
@@ -50,7 +53,7 @@ class LaboratoriesService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}aulas');
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
       body: jsonEncode(
         {
           'nombre': aula.nombre!,
@@ -82,7 +85,7 @@ class LaboratoriesService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}aulas/1');
     final response = await http.put(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
       body: jsonEncode(
         {
           "nombre": aula.nombre,
@@ -101,7 +104,10 @@ class LaboratoriesService extends ChangeNotifier {
 
   Future deleteLaboratory(int id) async {
     final url = Uri.parse('${API.BASE_URL}aulas/$id');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       laboratories.removeWhere((element) => element.id == id);
       searchsLaboratories = laboratories;

@@ -1,5 +1,14 @@
+import 'package:dashboard_fisei/utils/security.dart';
+
 class API {
   // ignore: constant_identifier_names
-  // static const String BASE_URL = 'http://10.79.0.121:8000/api/';
-  static const String BASE_URL = 'http://146.190.51.141/api/';
+  static const String BASE_URL = 'http://10.79.0.145:8000/api/';
+  // static const String BASE_URL = 'http://146.190.51.141/api/';
+
+  static Map<String, String> defaultHeaders = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Authorization': Security.token,
+  };
 }

@@ -19,7 +19,10 @@ class SuggestionsService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}sugerencias');
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)['sugerencias'];
       suggestions = jsonData.map((json) => Sugerencia.fromJson(json)).toList();

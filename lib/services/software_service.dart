@@ -40,6 +40,7 @@ class SoftwareService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}softwares');
     final response = await http.post(
       url,
+      headers: API.defaultHeaders,
       body: {
         'nombre': nombre,
         'version': version,
@@ -62,6 +63,7 @@ class SoftwareService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}softwares/${software.id}');
     final response = await http.put(
       url,
+      headers: API.defaultHeaders,
       body: {
         'nombre': nombre,
         'version': version,
@@ -81,7 +83,10 @@ class SoftwareService extends ChangeNotifier {
     required Software software,
   }) async {
     final url = Uri.parse('${API.BASE_URL}softwares/${software.id}');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       softwares.removeWhere((s) => s.id == software.id);
       notifyListeners();

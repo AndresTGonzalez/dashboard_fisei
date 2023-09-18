@@ -22,7 +22,10 @@ class TeachersService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}docentes');
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)['docentes'];
       teachers = jsonData.map((json) => Teacher.fromJson(json)).toList();
@@ -43,7 +46,7 @@ class TeachersService extends ChangeNotifier {
         'docente': teacher.nombre,
         'cedula': teacher.cedula,
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
     );
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
@@ -64,7 +67,7 @@ class TeachersService extends ChangeNotifier {
       body: jsonEncode({
         'docente': teacher.nombre,
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
     );
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(response.body);
@@ -79,7 +82,10 @@ class TeachersService extends ChangeNotifier {
 
   Future deleteTeacher(int id) async {
     final url = Uri.parse('${API.BASE_URL}docentes/$id');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       teachers.removeWhere((element) => element.id == id);
       searchTeachers = teachers;

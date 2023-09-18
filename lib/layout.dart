@@ -1,5 +1,6 @@
 import 'package:dashboard_fisei/constants/constants.dart';
 import 'package:dashboard_fisei/pages/pages.dart';
+import 'package:dashboard_fisei/providers/auth_provider.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,6 +51,7 @@ class _LayoutState extends State<Layout> {
         actions: [
           IconButton(
             onPressed: () {
+              AuthProvider.signOut();
               Navigator.pushReplacementNamed(context, '/login');
             },
             icon: const Icon(

@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "251194460438",
+    "project_id": "horarios-fisei",
+    "storage_bucket": "horarios-fisei.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251194460438:android:ac624f7eba2d74c4d96837",
+        "android_client_info": {
+          "package_name": "com.example.dashboard_fisei"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251194460438-pf9vkkcpitai9h49q25gcachfq7it9b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNN-YIsx9cesV3sURTMMQyjH5ITpghbuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251194460438-pf9vkkcpitai9h49q25gcachfq7it9b5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "251194460438-6juh5f4612g0p8f3fi4qhan4jjt3l1se.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.horariosFiseiFrontend"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251194460438:android:15fef3a7b41b442dd96837",
+        "android_client_info": {
+          "package_name": "com.example.horarios_fisei_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251194460438-mk2t1p7ip6o22npl3tlolildd26potep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.horarios_fisei_frontend",
+            "certificate_hash": "74b31e56e6e1d79577fbee141ede4b5bd47bdf52"
+          }
+        },
+        {
+          "client_id": "251194460438-veunh4grrv2g77g2j2ekeh0v5f8b3ph5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.horarios_fisei_frontend",
+            "certificate_hash": "9b38bd98412dd963a3a497b792de935b4828f19d"
+          }
+        },
+        {
+          "client_id": "251194460438-pf9vkkcpitai9h49q25gcachfq7it9b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNN-YIsx9cesV3sURTMMQyjH5ITpghbuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251194460438-pf9vkkcpitai9h49q25gcachfq7it9b5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "251194460438-6juh5f4612g0p8f3fi4qhan4jjt3l1se.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.horariosFiseiFrontend"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

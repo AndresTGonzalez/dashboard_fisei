@@ -305,6 +305,31 @@ class _Dialog extends StatelessWidget {
               const SizedBox(height: 20),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
+                child: DropdownButtonFormField(
+                  items: SelectorStaticOptions.auxiliares
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e,
+                            style: GoogleFonts.openSans(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    individualSheetProvider.auxiliar = value as String;
+                  },
+                  decoration: _dropdownStyle(label: 'Auxiliar'),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: Text(
                   'La fecha de la hoja de control se asignará automáticamente al día de hoy.',
                   style: GoogleFonts.openSans(

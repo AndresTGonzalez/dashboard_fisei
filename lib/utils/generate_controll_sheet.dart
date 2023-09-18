@@ -1,3 +1,4 @@
+import 'package:dashboard_fisei/models/sheet.dart';
 import 'package:dashboard_fisei/utils/selector_static_options.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
@@ -19,14 +20,11 @@ class GenerateControllSheet {
     final pdf = pw.Document();
     final font = await PdfGoogleFonts.merriweatherRegular();
     final fontBold = await PdfGoogleFonts.merriweatherBold();
-
     final ByteData image = await rootBundle.load('assets/images/escudo.png');
     Uint8List escudo = (image).buffer.asUint8List();
     final ByteData imageFISEI =
         await rootBundle.load('assets/images/fisei.png');
     Uint8List fisei = (imageFISEI).buffer.asUint8List();
-
-    // Aqui llamo el metodo para generar una pagina
     _generatePage(
       pdf: pdf,
       font: font,
@@ -43,7 +41,49 @@ class GenerateControllSheet {
       salida: salida,
       materia: materia,
     );
+    final bytes = await pdf.save();
+    await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => bytes);
+  }
 
+  static Future generateBlock({
+    required List<Horario> horarios,
+    required String manana,
+    required String tarde,
+  }) async {
+    final pdf = pw.Document();
+    final font = await PdfGoogleFonts.merriweatherRegular();
+    final fontBold = await PdfGoogleFonts.merriweatherBold();
+    final ByteData image = await rootBundle.load('assets/images/escudo.png');
+    Uint8List escudo = (image).buffer.asUint8List();
+    final ByteData imageFISEI =
+        await rootBundle.load('assets/images/fisei.png');
+    Uint8List fisei = (imageFISEI).buffer.asUint8List();
+
+    for (var i = 0; i < horarios.length; i++) {
+      var inicio = int.parse(horarios[i].inicio);
+      var auxiliar = '';
+      if (inicio < 13) {
+        auxiliar = manana;
+      } else {
+        auxiliar = tarde;
+      }
+      _generatePage(
+        pdf: pdf,
+        font: font,
+        escudo: escudo,
+        fisei: fisei,
+        fontBold: fontBold,
+        carrera: horarios[i].carrera,
+        laboratorio: horarios[i].laboratorio,
+        docente: horarios[i].docente,
+        auxiliar: auxiliar,
+        periodo: 'Septiembre 2023 - Febrero 2024',
+        nivel: horarios[i].nivel,
+        ingreso: '${horarios[i].inicio}H00',
+        salida: '${horarios[i].fin}H00',
+        materia: horarios[i].materia,
+      );
+    }
     final bytes = await pdf.save();
     await Printing.layoutPdf(onLayout: (PdfPageFormat format) async => bytes);
   }
@@ -361,7 +401,7 @@ class GenerateControllSheet {
                 ),
               ),
               pw.Container(
-                width: 146,
+                width: 177,
                 height: 15,
                 alignment: pw.Alignment.centerLeft,
                 child: pw.Text(
@@ -554,7 +594,7 @@ class GenerateControllSheet {
                 height: 15,
                 width: availableWidth / 2.5,
                 child: pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
                   children: [
                     pw.Text(
                       'MATERIA: ',
@@ -565,7 +605,7 @@ class GenerateControllSheet {
                       ),
                     ),
                     pw.Container(
-                      width: 125,
+                      width: 100,
                       height: 15,
                       alignment: pw.Alignment.centerLeft,
                       child: pw.Text(

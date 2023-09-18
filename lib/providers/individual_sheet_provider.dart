@@ -5,7 +5,7 @@ class IndividualSheetProvider extends ChangeNotifier {
   String _carrera = '';
   String _docente = '';
   String _laboratorio = '';
-  String _auxiliar = 'Alexandra Barrionuevo';
+  String _auxiliar = '';
   String _periodo = 'Septiembre 2023-Febrero 2024';
   String _nivel = '';
   String _paralelo = '';

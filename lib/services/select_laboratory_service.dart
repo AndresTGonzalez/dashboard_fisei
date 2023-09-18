@@ -14,7 +14,10 @@ class SelectLaboratoryService extends ChangeNotifier {
 
   Future getLaboratories() async {
     final url = Uri.parse('${API.BASE_URL}aulas');
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body)['aulas'];
       selectLaboratories.clear();

@@ -54,7 +54,10 @@ class SchedulesService extends ChangeNotifier {
     notifyListeners();
     schedules.clear();
     final url = Uri.parse('${API.BASE_URL}docente/$id');
-    final response = await http.get(url);
+    final response = await http.get(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final schedulesData = data['horarioInfo'];
@@ -74,7 +77,10 @@ class SchedulesService extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}horarios/$id');
-    final response = await http.delete(url);
+    final response = await http.delete(
+      url,
+      headers: API.defaultHeaders,
+    );
     if (response.statusCode == 200) {
       schedules.removeWhere((schedule) => schedule.id == id);
       isLoading = false;
@@ -99,7 +105,7 @@ class SchedulesService extends ChangeNotifier {
     final url = Uri.parse('${API.BASE_URL}horarios');
     final response = await http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: API.defaultHeaders,
       body: jsonEncode(
         {
           'aula_id': aulaId,
