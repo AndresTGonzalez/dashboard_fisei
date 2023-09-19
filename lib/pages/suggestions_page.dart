@@ -42,33 +42,6 @@ class _Table extends StatelessWidget {
                     children: [
                       _Search(suggestionsService: suggestionsService),
                       const Spacer(),
-                      MaterialButton(
-                        onPressed: () {},
-                        color: AppColors.vine,
-                        height: 40,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Container(
-                          // color: AppColors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.add,
-                                color: AppColors.white,
-                              ),
-                              Text(
-                                'Nuevo',
-                                style: GoogleFonts.openSans(
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),

@@ -1,7 +1,9 @@
 import 'package:dashboard_fisei/constants/app_colors.dart';
-import 'package:dashboard_fisei/providers/auth_provider.dart';
+import 'package:dashboard_fisei/providers/auth_service.dart';
+import 'package:dashboard_fisei/providers/login_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -45,103 +47,125 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Form(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: TextFormField(
-                          cursorColor: AppColors.black,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.black,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            labelText: 'Correo electrónico',
-                            labelStyle: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: TextFormField(
-                          obscureText: true,
-                          cursorColor: AppColors.black,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.black,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            labelText: 'Contraseña',
-                            labelStyle: GoogleFonts.openSans(
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Boton de iniciar sesion
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        width: double.infinity,
-                        height: 50,
-                        child: MaterialButton(
-                          onPressed: () async {
-                            // Navigator.pushReplacementNamed(
-                            //     context, '/dashboard');
-                            // await AuthProvider.createAccount();
-                            await AuthProvider.signInWithMail(
-                              emailAddress: 'adminredesfisei@uta.edu.ec',
-                              password: 'AdminRedesFISEI2000',
-                            );
-                            await AuthProvider.testToken();
-                            // ignore: use_build_context_synchronously
-                            Navigator.pushReplacementNamed(
-                                context, '/dashboard');
-                          },
-                          color: AppColors.vine,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            'Iniciar Sesión',
-                            style: GoogleFonts.openSans(
-                              color: AppColors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                ChangeNotifierProvider(
+                  create: (_) => LoginFormProvider(),
+                  child: _LoginForm(),
                 ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _LoginForm extends StatelessWidget {
+  const _LoginForm({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final loginForm = Provider.of<LoginFormProvider>(context);
+    return Form(
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: TextFormField(
+              onChanged: (value) => loginForm.email = value,
+              cursorColor: AppColors.black,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColors.black,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                labelText: 'Correo electrónico',
+                labelStyle: GoogleFonts.openSans(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: TextFormField(
+              onChanged: (value) => loginForm.password = value,
+              obscureText: true,
+              cursorColor: AppColors.black,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColors.black,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                labelText: 'Contraseña',
+                labelStyle: GoogleFonts.openSans(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+          // Boton de iniciar sesion
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            width: double.infinity,
+            height: 50,
+            child: MaterialButton(
+              onPressed: () async {
+                if (await AuthProvider.signInWithMail(
+                  emailAddress: loginForm.email,
+                  password: loginForm.password,
+                )) {
+                  await AuthProvider.testToken();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacementNamed(context, '/dashboard');
+                } else {
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Credenciales incorrectas'),
+                    ),
+                  );
+                }
+                // await AuthProvider.signInWithMail(
+                //   emailAddress: loginForm.email,
+                //   password: loginForm.password,
+                // );
+              },
+              color: AppColors.vine,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Iniciar Sesión',
+                style: GoogleFonts.openSans(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

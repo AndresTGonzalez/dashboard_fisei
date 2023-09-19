@@ -31,7 +31,6 @@ class SelectLaboratoryService extends ChangeNotifier {
       });
       notifyListeners();
     } else {
-      print(response.body);
     }
   }
 }

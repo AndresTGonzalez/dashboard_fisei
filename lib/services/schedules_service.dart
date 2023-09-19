@@ -68,9 +68,7 @@ class SchedulesService extends ChangeNotifier {
       sortSchedules();
       isLoading = false;
       notifyListeners();
-    } else {
-      print('Error');
-    }
+    } else {}
   }
 
   Future deleteSchedule(int id) async {
@@ -85,12 +83,10 @@ class SchedulesService extends ChangeNotifier {
       schedules.removeWhere((schedule) => schedule.id == id);
       isLoading = false;
       notifyListeners();
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
-  Future addSchedule({
+  Future<bool> addSchedule({
     int? aulaId,
     int? docenteId,
     int? actividadId,
@@ -100,35 +96,39 @@ class SchedulesService extends ChangeNotifier {
     String numeroPuesto = '',
     int? numeroDia,
   }) async {
-    isLoading = true;
-    notifyListeners();
-    final url = Uri.parse('${API.BASE_URL}horarios');
-    final response = await http.post(
-      url,
-      headers: API.defaultHeaders,
-      body: jsonEncode(
-        {
-          'aula_id': aulaId,
-          'docente_id': docenteId,
-          'actividad_id': actividadId,
-          'paralelo_id': paraleloId,
-          'hora_inicio': horaInicio,
-          'hora_fin': horaFin,
-          'numero_puesto': numeroPuesto,
-          'numero_dia': numeroDia,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final scheduleTemp = HorarioInfo.fromJson(data);
-      schedules.add(scheduleTemp);
-      print(scheduleTemp.numeroDia);
-      sortSchedules();
-      isLoading = false;
+    try {
+      isLoading = true;
       notifyListeners();
-    } else {
-      print(response.body);
+      final url = Uri.parse('${API.BASE_URL}horarios');
+      final response = await http.post(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode(
+          {
+            'aula_id': aulaId,
+            'docente_id': docenteId,
+            'actividad_id': actividadId,
+            'paralelo_id': paraleloId,
+            'hora_inicio': horaInicio,
+            'hora_fin': horaFin,
+            'numero_puesto': numeroPuesto,
+            'numero_dia': numeroDia,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final scheduleTemp = HorarioInfo.fromJson(data);
+        schedules.add(scheduleTemp);
+        sortSchedules();
+        isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 }

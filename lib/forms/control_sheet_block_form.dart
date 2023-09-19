@@ -1,5 +1,6 @@
 import 'package:dashboard_fisei/constants/app_colors.dart';
 import 'package:dashboard_fisei/providers/control_sheet_provider.dart';
+import 'package:dashboard_fisei/utils/generate_controll_sheet.dart';
 import 'package:dashboard_fisei/utils/selector_static_options.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,6 +68,8 @@ class _Dialog extends StatelessWidget {
                       .toList(),
                   onChanged: (value) {
                     controlSheetProvider.blok = value as int;
+                    controlSheetProvider.manana = '';
+                    controlSheetProvider.tarde = '';
                   },
                   decoration: _dropdownStyle(label: 'Bloque'),
                 ),
@@ -180,6 +183,11 @@ class _Dialog extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             controlSheetProvider.getSchedules(blok: controlSheetProvider.blok);
+            GenerateControllSheet.generateBlock(
+              horarios: controlSheetProvider.horarios,
+              manana: controlSheetProvider.manana,
+              tarde: controlSheetProvider.tarde,
+            );
           },
           color: AppColors.green,
           height: 40,

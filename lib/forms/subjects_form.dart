@@ -105,7 +105,6 @@ class SubjectsForm extends StatelessWidget {
                     )
                     .toList(),
                 onChanged: (value) {
-                  // print(value);
                   subjectsService.nivel = value!;
                 },
                 decoration: _dropdownStyle(
@@ -131,7 +130,6 @@ class SubjectsForm extends StatelessWidget {
                     )
                     .toList(),
                 onChanged: (value) {
-                  // print(value);
                   subjectsService.idCarrera = value!;
                 },
                 decoration: _dropdownStyle(
@@ -168,19 +166,41 @@ class SubjectsForm extends StatelessWidget {
                 idCarrera: subjectsService.idCarrera,
               );
               // Cerrar el dialog
-              Navigator.of(context).pop();
-              await subjectsService.addSubject(materia);
+              if (await subjectsService.addSubject(materia)) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Error al agregar la materia'),
+                  ),
+                );
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              }
             } else {
-              await subjectsService.updateSubject(
+              if (await subjectsService.updateSubject(
                 Materia(
                   id: materia.id,
                   nombre: subjectsService.nombre,
                   nivel: subjectsService.nivel,
                   idCarrera: subjectsService.idCarrera,
                 ),
-              );
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Error al editar la materia'),
+                  ),
+                );
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              }
               // Cerrar el dialog
-              Navigator.of(context).pop();
             }
           },
           color: AppColors.green,

@@ -35,20 +35,28 @@ class ControlSheetProvider extends ChangeNotifier {
   Future getSchedules({
     int blok = 0,
   }) async {
-    DateTime now = DateTime.now();
-    final url = Uri.parse('${API.BASE_URL}horario/$blok/${now.weekday}');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body)['horarios'];
-      horarios = jsonData.map((json) => Horario.fromJson(json)).toList();
-      _sortSchedules();
-      await GenerateControllSheet.generateBlock(
-        horarios: horarios,
-        manana: manana,
-        tarde: tarde,
+    try {
+      print(blok);
+      DateTime now = DateTime.now();
+      final url = Uri.parse('${API.BASE_URL}horario/$blok/${now.weekday}');
+      final response = await http.get(
+        url,
+        headers: API.defaultHeaders,
       );
-    } else {
-      // print(response.body);
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonData = jsonDecode(response.body)['horarios'];
+        horarios = jsonData.map((json) => Horario.fromJson(json)).toList();
+        _sortSchedules();
+        await GenerateControllSheet.generateBlock(
+          horarios: horarios,
+          manana: manana,
+          tarde: tarde,
+        );
+      } else {
+        print(response.body);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

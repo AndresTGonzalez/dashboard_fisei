@@ -23,9 +23,9 @@ class LaboratoryForm extends StatelessWidget {
   ];
   List<String> floors = [
     'Subsuelo',
-    'Primero',
+    'Primer',
     'Segundo',
-    'Tercero',
+    'Tercer',
     'Cuarto',
     'Quinto',
     'Sexto',
@@ -302,7 +302,7 @@ class LaboratoryForm extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             if (aula.id == 0) {
-              await laboratoriesService.addLaboratory(
+              if (await laboratoriesService.addLaboratory(
                 Aula(
                   nombre: laboratoriesService.nombre,
                   edificio: laboratoriesService.edificio,
@@ -312,11 +312,23 @@ class LaboratoryForm extends StatelessWidget {
                   cantidadPc: laboratoriesService.cantidadPc,
                   capacidad: laboratoriesService.capacidad,
                 ),
-              );
+              )) {
+                // Cerrar el dialogo
+                Navigator.of(context).pop();
+              } else {
+                // Mostrar un error
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Ocurrió un error al agregar el laboratorio',
+                    ),
+                  ),
+                );
+              }
               // Cerrar el dialogo
-              Navigator.of(context).pop();
             } else {
-              laboratoriesService.updateLaboratory(
+              if (await laboratoriesService.updateLaboratory(
                 Aula(
                   id: aula.id,
                   nombre: laboratoriesService.nombre,
@@ -327,9 +339,20 @@ class LaboratoryForm extends StatelessWidget {
                   cantidadPc: laboratoriesService.cantidadPc,
                   capacidad: laboratoriesService.capacidad,
                 ),
-              );
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Ocurrió un error al editar el laboratorio',
+                    ),
+                  ),
+                );
+              }
               // Cerrar el dialogo
-              Navigator.of(context).pop();
             }
           },
           color: AppColors.green,

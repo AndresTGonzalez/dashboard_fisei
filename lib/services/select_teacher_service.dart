@@ -29,7 +29,6 @@ class SelectTeacherService extends ChangeNotifier {
       teachers = jsonData.map((json) => Teacher.fromJson(json)).toList();
       notifyListeners();
     } else {
-      print(response.body);
     }
   }
 }

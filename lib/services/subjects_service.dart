@@ -19,7 +19,7 @@ class SubjectsService extends ChangeNotifier {
     getSubjects();
   }
 
-  Future getSubjects() async {
+  Future<bool> getSubjects() async {
     isLoading = true;
     notifyListeners();
     final url = Uri.parse('${API.BASE_URL}actividades');
@@ -33,84 +33,95 @@ class SubjectsService extends ChangeNotifier {
       searchsSubjects = subjects;
       isLoading = false;
       notifyListeners();
+      return true;
     } else {
       isLoading = false;
       notifyListeners();
-      // print(response.body);
+      print(response.body);
+      return false;
     }
   }
 
-  Future addSubject(Materia materia) async {
-    final url = Uri.parse('${API.BASE_URL}actividades');
-    final response = await http.post(
-      url,
-      headers: API.defaultHeaders,
-      body: jsonEncode(
-        {
-          'nombre': materia.nombre,
-          'nivel': materia.nivel,
-          'id_carrera': materia.idCarrera,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      var nombre = jsonData['nombre'];
-      var nivel = jsonData['nivel'];
-      var idCarrera = jsonData['id_carrera'];
-      var carrera = jsonData['carrera'];
-      var id = jsonData['id'];
-      subjects.add(Materia(
-        id: id,
-        nombre: nombre,
-        nivel: nivel,
-        idCarrera: idCarrera,
-        carrera: carrera,
-      ));
-      searchsSubjects = subjects;
-      notifyListeners();
-    } else {
-      print(response.body);
+  Future<bool> addSubject(Materia materia) async {
+    try {
+      final url = Uri.parse('${API.BASE_URL}actividades');
+      final response = await http.post(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode(
+          {
+            'nombre': materia.nombre.toUpperCase(),
+            'nivel': materia.nivel,
+            'id_carrera': materia.idCarrera,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        var nombre = jsonData['nombre'];
+        var nivel = jsonData['nivel'];
+        var idCarrera = jsonData['id_carrera'];
+        var carrera = jsonData['carrera'];
+        var id = jsonData['id'];
+        subjects.add(Materia(
+          id: id,
+          nombre: nombre,
+          nivel: nivel,
+          idCarrera: idCarrera,
+          carrera: carrera,
+        ));
+        searchsSubjects = subjects;
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
-    // print(materia.nombre);
   }
 
-  Future updateSubject(Materia materia) async {
-    final url = Uri.parse('${API.BASE_URL}actividades/${materia.id}');
-    final response = await http.put(
-      url,
-      headers: API.defaultHeaders,
-      body: jsonEncode(
-        {
-          'nombre': materia.nombre,
-          'nivel': materia.nivel,
-          'id_carrera': materia.idCarrera,
-        },
-      ),
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      var nombre = jsonData['nombre'];
-      var nivel = jsonData['nivel'];
-      var idCarrera = jsonData['id_carrera'];
-      var carrera = jsonData['carrera'];
-      var id = jsonData['id'];
-      subjects = subjects.map((subject) {
-        if (subject.id == materia.id) {
-          subject = Materia(
-            id: id,
-            nombre: nombre,
-            nivel: nivel,
-            idCarrera: idCarrera,
-            carrera: carrera,
-          );
-        }
-        return subject;
-      }).toList();
-      searchsSubjects = subjects;
-      notifyListeners();
-    } else {
-      print(response.body);
+  Future<bool> updateSubject(Materia materia) async {
+    try {
+      final url = Uri.parse('${API.BASE_URL}actividades/${materia.id}');
+      final response = await http.put(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode(
+          {
+            'nombre': materia.nombre.toUpperCase(),
+            'nivel': materia.nivel,
+            'id_carrera': materia.idCarrera,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        var nombre = jsonData['nombre'];
+        var nivel = jsonData['nivel'];
+        var idCarrera = jsonData['id_carrera'];
+        var carrera = jsonData['carrera'];
+        var id = jsonData['id'];
+        subjects = subjects.map((subject) {
+          if (subject.id == materia.id) {
+            subject = Materia(
+              id: id,
+              nombre: nombre,
+              nivel: nivel,
+              idCarrera: idCarrera,
+              carrera: carrera,
+            );
+          }
+          return subject;
+        }).toList();
+        searchsSubjects = subjects;
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -124,9 +135,7 @@ class SubjectsService extends ChangeNotifier {
       subjects.removeWhere((subject) => subject.id == id);
       searchsSubjects = subjects;
       notifyListeners();
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   void search(String query) {

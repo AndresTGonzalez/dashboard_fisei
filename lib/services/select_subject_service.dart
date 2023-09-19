@@ -45,10 +45,8 @@ class SelectSubjectService extends ChangeNotifier {
           ),
         );
       });
-      print(selectSubjects.length);
       notifyListeners();
     } else {
-      print(response.body);
     }
   }
 }

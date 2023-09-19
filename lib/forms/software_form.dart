@@ -118,19 +118,50 @@ class SoftwareForm extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             if (software.id != 0) {
-              await softwareService.updateSoftware(
+              if (await softwareService.updateSoftware(
                 software: software,
                 laboratoryId: softwareService.laboratoryId,
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Ocurrió un error al actualizar el software',
+                      style: GoogleFonts.openSans(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    backgroundColor: AppColors.black,
+                  ),
+                );
+              }
             } else {
-              await softwareService.addSoftware(
-                software: software,
+              if (await softwareService.addSoftware(
                 laboratoryId: softwareService.laboratoryId,
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Ocurrió un error al agregar el software',
+                      style: GoogleFonts.openSans(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    backgroundColor: AppColors.black,
+                  ),
+                );
+              }
             }
           },
           color: AppColors.green,

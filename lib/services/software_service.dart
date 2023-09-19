@@ -33,49 +33,58 @@ class SoftwareService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future addSoftware({
-    Software? software,
+  Future<bool> addSoftware({
     int? laboratoryId,
   }) async {
-    final url = Uri.parse('${API.BASE_URL}softwares');
-    final response = await http.post(
-      url,
-      headers: API.defaultHeaders,
-      body: {
-        'nombre': nombre,
-        'version': version,
-        'aula_id': laboratoryId.toString(),
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      softwares.add(Software.fromJson(jsonData));
-      notifyListeners();
-    } else {
-      print(response.body);
+    try {
+      final url = Uri.parse('${API.BASE_URL}softwares');
+      final response = await http.post(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode({
+          'nombre': nombre,
+          'version': version,
+          'aula_id': 1,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        softwares.add(Software.fromJson(jsonData));
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
-  Future updateSoftware({
+  Future<bool> updateSoftware({
     required Software software,
     required int laboratoryId,
   }) async {
-    final url = Uri.parse('${API.BASE_URL}softwares/${software.id}');
-    final response = await http.put(
-      url,
-      headers: API.defaultHeaders,
-      body: {
-        'nombre': nombre,
-        'version': version,
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final index = softwares.indexWhere((s) => s.id == software.id);
-      softwares[index] = Software.fromJson(jsonData);
-      notifyListeners();
-    } else {
-      print(response.body);
+    try {
+      final url = Uri.parse('${API.BASE_URL}softwares/${software.id}');
+      final response = await http.put(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode({
+          'nombre': nombre,
+          'version': version,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final index = softwares.indexWhere((s) => s.id == software.id);
+        softwares[index] = Software.fromJson(jsonData);
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -90,8 +99,6 @@ class SoftwareService extends ChangeNotifier {
     if (response.statusCode == 200) {
       softwares.removeWhere((s) => s.id == software.id);
       notifyListeners();
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 }

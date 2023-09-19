@@ -347,7 +347,7 @@ class _FormDialog extends StatelessWidget {
         ),
         MaterialButton(
           onPressed: () async {
-            await schedulesService.addSchedule(
+            if (await schedulesService.addSchedule(
               aulaId: schedulesService.aulaId,
               docenteId: teacherId,
               actividadId: schedulesService.actividadId,
@@ -356,10 +356,27 @@ class _FormDialog extends StatelessWidget {
               horaFin: schedulesService.horaFin,
               numeroPuesto: schedulesService.numeroPuesto,
               numeroDia: schedulesService.numeroDia,
-            );
+            )) {
+              await schedulesService.getSchedulesByTeacher(teacherId);
+              Navigator.of(context).pop();
+            } else {
+              // Mostrar error
+              // ignore: use_build_context_synchronously
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Error al agregar el horario',
+                    style: GoogleFonts.openSans(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
+                  backgroundColor: AppColors.black,
+                ),
+              );
+            }
             // Actualiza la lista de horarios
-            await schedulesService.getSchedulesByTeacher(teacherId);
-            Navigator.of(context).pop();
           },
           color: AppColors.green,
           height: 40,

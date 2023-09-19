@@ -118,25 +118,60 @@ class TeacherFormDialog extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             if (teacher.id == 0) {
-              await teachersService.addTeacher(
+              //
+              if (await teachersService.addTeacher(
                 Teacher(
                   cedula: teachersService.cedula,
                   nombre: teachersService.nombre,
                   id: 0,
                 ),
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Ha ocurrido un error',
+                      style: GoogleFonts.openSans(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    backgroundColor: AppColors.black,
+                  ),
+                );
+                Navigator.of(context).pop();
+              }
             } else {
-              await teachersService.editTeacher(
+              if (await teachersService.editTeacher(
                 Teacher(
                   cedula: teachersService.cedula,
                   nombre: teachersService.nombre,
                   id: teacher.id,
                 ),
-              );
-              // ignore: use_build_context_synchronously
-              Navigator.of(context).pop();
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Ha ocurrido un error',
+                      style: GoogleFonts.openSans(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                    backgroundColor: AppColors.black,
+                  ),
+                );
+                Navigator.of(context).pop();
+              }
             }
           },
           color: AppColors.green,

@@ -1,7 +1,7 @@
 import 'package:dashboard_fisei/firebase_options.dart';
 import 'package:dashboard_fisei/layout.dart';
 import 'package:dashboard_fisei/pages/login_page.dart';
-import 'package:dashboard_fisei/providers/auth_provider.dart';
+import 'package:dashboard_fisei/providers/auth_service.dart';
 import 'package:dashboard_fisei/utils/custom_scroll_behivor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

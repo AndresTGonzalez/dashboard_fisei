@@ -33,49 +33,59 @@ class CharacteristicService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future addCharacteristic({
+  Future<bool> addCharacteristic({
     int? laboratoryId,
   }) async {
-    final url = Uri.parse('${API.BASE_URL}caracteristicas');
-    final response = await http.post(
-      url,
-      headers: API.defaultHeaders,
-      body: {
-        'nombre': nombre,
-        'descripcion': descripcion,
-        'aula_id': laboratoryId.toString(),
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      caracteristicas.add(Caracteristica.fromJson(jsonData));
-      notifyListeners();
-    } else {
-      print(response.body);
+    try {
+      final url = Uri.parse('${API.BASE_URL}caracteristicas');
+      final response = await http.post(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode({
+          'nombre': nombre,
+          'descripcion': descripcion,
+          'aula_id': laboratoryId.toString(),
+        }),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        caracteristicas.add(Caracteristica.fromJson(jsonData));
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
-  Future updateCharacteristic({
+  Future<bool> updateCharacteristic({
     required int characteristicId,
   }) async {
-    final url = Uri.parse('${API.BASE_URL}caracteristicas/$characteristicId');
-    final response = await http.put(
-      url,
-      headers: API.defaultHeaders,
-      body: {
-        'nombre': nombre,
-        'descripcion': descripcion,
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      final index = caracteristicas.indexWhere(
-        (caracteristica) => caracteristica.id == characteristicId,
+    try {
+      final url = Uri.parse('${API.BASE_URL}caracteristicas/$characteristicId');
+      final response = await http.put(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode({
+          'nombre': nombre,
+          'descripcion': descripcion,
+        }),
       );
-      caracteristicas[index] = Caracteristica.fromJson(jsonData);
-      notifyListeners();
-    } else {
-      print(response.body);
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final index = caracteristicas.indexWhere(
+          (caracteristica) => caracteristica.id == characteristicId,
+        );
+        caracteristicas[index] = Caracteristica.fromJson(jsonData);
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
@@ -92,8 +102,6 @@ class CharacteristicService extends ChangeNotifier {
         (caracteristica) => caracteristica.id == characteristicId,
       );
       notifyListeners();
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 }

@@ -75,15 +75,7 @@ class IndividualSheetProvider extends ChangeNotifier {
   }
 
   Future generateSheet() async {
-    // print('Carrera: $_carrera');
-    // print('Docente: $_docente');
-    // print('Auxiliar: $_auxiliar');
-    // print('Periodo: $_periodo');
-    // print('Nivel: $_nivel');
-    // print('Paralelo: $_paralelo');
-    // print('Ingreso: $_ingreso');
-    // print('Salida: $_salida');
-    // print('Materia: $_materia');
+
     GenerateControllSheet.generateControllSheet(
       carrera: _carrera,
       docente: _docente,

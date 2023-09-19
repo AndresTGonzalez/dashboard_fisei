@@ -122,15 +122,37 @@ class CharacteristicsForm extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             if (caracteristica.id == 0) {
-              await characteristicService.addCharacteristic(
+              if (await characteristicService.addCharacteristic(
                 laboratoryId: laboratoryId,
-              );
-              Navigator.of(context).pop();
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Ocurrió un error al agregar la característica',
+                    ),
+                  ),
+                );
+              }
             } else {
-              await characteristicService.updateCharacteristic(
+              if (await characteristicService.updateCharacteristic(
                 characteristicId: caracteristica.id,
-              );
-              Navigator.of(context).pop();
+              )) {
+                // ignore: use_build_context_synchronously
+                Navigator.of(context).pop();
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Ocurrió un error al editar la característica',
+                    ),
+                  ),
+                );
+              }
             }
           },
           color: AppColors.green,

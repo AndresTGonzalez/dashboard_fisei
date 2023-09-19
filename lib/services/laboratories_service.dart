@@ -47,59 +47,75 @@ class LaboratoriesService extends ChangeNotifier {
     }
   }
 
-  Future addLaboratory(Aula aula) async {
-    isLoading = true;
-    notifyListeners();
-    final url = Uri.parse('${API.BASE_URL}aulas');
-    final response = await http.post(
-      url,
-      headers: API.defaultHeaders,
-      body: jsonEncode(
-        {
-          'nombre': aula.nombre!,
-          'edificio': aula.edificio!,
-          'piso': aula.piso!,
-          'proyector': aula.proyector!,
-          'aire': aula.aire!,
-          'cantidad_pc': aula.cantidadPc,
-          'capacidad': aula.capacidad,
-        },
-      ),
-    );
-    print(response.body);
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      print(jsonData);
-      laboratories.add(Aula.fromJson(jsonData));
-      searchsLaboratories = laboratories;
-      isLoading = false;
+  Future<bool> addLaboratory(Aula aula) async {
+    try {
+      isLoading = true;
       notifyListeners();
-    } else {
-      isLoading = false;
-      notifyListeners();
-      // print(response.body);
+      final url = Uri.parse('${API.BASE_URL}aulas');
+      final response = await http.post(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode(
+          {
+            'nombre': aula.nombre!.toUpperCase(),
+            'edificio': aula.edificio!,
+            'piso': aula.piso!,
+            'proyector': aula.proyector!,
+            'aire': aula.aire!,
+            'cantidad_pc': aula.cantidadPc,
+            'capacidad': aula.capacidad,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        laboratories.add(Aula.fromJson(jsonData));
+        searchsLaboratories = laboratories;
+        isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 
-  Future updateLaboratory(Aula aula) async {
-    final url = Uri.parse('${API.BASE_URL}aulas/1');
-    final response = await http.put(
-      url,
-      headers: API.defaultHeaders,
-      body: jsonEncode(
-        {
-          "nombre": aula.nombre,
-          "edificio": aula.edificio,
-          "piso": aula.piso,
-          "proyector": aula.proyector,
-          "aire": aula.aire,
-          "cantidad_pc": aula.cantidadPc,
-          "capacidad": aula.capacidad,
-        },
-      ),
-    );
-    print(aula.nombre);
-    print(response.body);
+  Future<bool> updateLaboratory(Aula aula) async {
+    try {
+      final url = Uri.parse('${API.BASE_URL}aulas/1');
+      final response = await http.put(
+        url,
+        headers: API.defaultHeaders,
+        body: jsonEncode(
+          {
+            "nombre": aula.nombre,
+            "edificio": aula.edificio,
+            "piso": aula.piso,
+            "proyector": aula.proyector,
+            "aire": aula.aire,
+            "cantidad_pc": aula.cantidadPc,
+            "capacidad": aula.capacidad,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final index =
+            laboratories.indexWhere((element) => element.id == aula.id);
+        laboratories[index] = Aula.fromJson(jsonData);
+        searchsLaboratories = laboratories;
+        notifyListeners();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
   }
 
   Future deleteLaboratory(int id) async {
@@ -112,9 +128,7 @@ class LaboratoriesService extends ChangeNotifier {
       laboratories.removeWhere((element) => element.id == id);
       searchsLaboratories = laboratories;
       notifyListeners();
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   void search(String query) {
