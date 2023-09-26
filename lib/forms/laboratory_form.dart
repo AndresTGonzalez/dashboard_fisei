@@ -23,13 +23,13 @@ class LaboratoryForm extends StatelessWidget {
   ];
   List<String> floors = [
     'Subsuelo',
-    'Primer',
-    'Segundo',
-    'Tercer',
-    'Cuarto',
-    'Quinto',
-    'Sexto',
-    'Septimo'
+    'Primer Piso',
+    'Segundo Piso',
+    'Tercer Piso',
+    'Cuarto Piso',
+    'Quinto Piso',
+    'Sexto Piso',
+    'Septimo Piso'
   ];
 
   List<String> options = ['Si', 'No'];

@@ -26,6 +26,7 @@ class GenerateControllSheet {
         await rootBundle.load('assets/images/fisei.png');
     Uint8List fisei = (imageFISEI).buffer.asUint8List();
     _generatePage(
+      fecha: DateTime.now(),
       pdf: pdf,
       font: font,
       escudo: escudo,
@@ -49,6 +50,7 @@ class GenerateControllSheet {
     required List<Horario> horarios,
     required String manana,
     required String tarde,
+    required DateTime fecha,
   }) async {
     final pdf = pw.Document();
     final font = await PdfGoogleFonts.merriweatherRegular();
@@ -68,6 +70,7 @@ class GenerateControllSheet {
         auxiliar = tarde;
       }
       _generatePage(
+        fecha: fecha,
         pdf: pdf,
         font: font,
         escudo: escudo,
@@ -89,6 +92,7 @@ class GenerateControllSheet {
   }
 
   static void _generatePage({
+    required DateTime fecha,
     pw.Document? pdf,
     pw.Font? font,
     Uint8List? escudo,
@@ -118,6 +122,7 @@ class GenerateControllSheet {
               children: [
                 _header(font, carrera, escudo!, fisei!),
                 _details(
+                  fecha: fecha,
                   font: font,
                   fontBold: fontBold,
                   availableWidth: availableWidth,
@@ -347,6 +352,7 @@ class GenerateControllSheet {
   }
 
   static pw.Container _details({
+    required DateTime fecha,
     dynamic font,
     dynamic fontBold,
     double availableWidth = 0.0,
@@ -360,7 +366,7 @@ class GenerateControllSheet {
     String salida = '',
     String materia = '',
   }) {
-    DateTime now = DateTime.now();
+    // DateTime now = DateTime.now();
 
     return pw.Container(
       width: availableWidth,
@@ -479,7 +485,7 @@ class GenerateControllSheet {
               ),
               pw.SizedBox(width: 20),
               pw.Text(
-                'FECHA: ${now.day} del ${SelectorStaticOptions.meses[now.month - 1]} de ${now.year}',
+                'FECHA: ${fecha.day} del ${SelectorStaticOptions.meses[fecha.month - 1]} de ${fecha.year}',
                 style: pw.TextStyle(
                   fontSize: 6.5,
                   font: fontBold,

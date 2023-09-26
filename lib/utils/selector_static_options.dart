@@ -1,5 +1,6 @@
 import 'package:dashboard_fisei/models/select_block.dart';
 import 'package:dashboard_fisei/models/select_carrer.dart';
+import 'package:dashboard_fisei/models/select_complementary.dart';
 import 'package:dashboard_fisei/models/select_day.dart';
 import 'package:dashboard_fisei/models/select_hour.dart';
 import 'package:dashboard_fisei/models/select_nivel.dart';
@@ -46,6 +47,42 @@ class SelectorStaticOptions {
     SelectCarrer(id: 3, carrera: 'Ingeniería Industrial'),
     SelectCarrer(id: 4, carrera: 'Robótica'),
     SelectCarrer(id: 5, carrera: 'Tecnologías de la Información'),
+  ];
+  // Tutorias acedemicas
+  // Preparacion de clase
+  // Reunion de UOC
+  // Comision
+  // Actividades complementarias
+
+  static List<SelectComplementary> complementary = [
+    SelectComplementary(id: 208, name: 'Tutorias academicas'),
+    SelectComplementary(id: 209, name: 'Preparacion de clase'),
+    SelectComplementary(id: 210, name: 'Reunion de UOC'),
+    SelectComplementary(id: 211, name: 'Comision'),
+    SelectComplementary(id: 212, name: 'Actividades complementarias'),
+  ];
+
+  static List<String> puestos = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
   ];
 
   static List<SelectCarrer> carrersSheet = [

@@ -20,24 +20,28 @@ class SubjectsService extends ChangeNotifier {
   }
 
   Future<bool> getSubjects() async {
-    isLoading = true;
-    notifyListeners();
-    final url = Uri.parse('${API.BASE_URL}actividades');
-    final response = await http.get(
-      url,
-      headers: API.defaultHeaders,
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body)['actividades'];
-      subjects = jsonData.map((json) => Materia.fromJson(json)).toList();
-      searchsSubjects = subjects;
-      isLoading = false;
+    try {
+      isLoading = true;
       notifyListeners();
-      return true;
-    } else {
-      isLoading = false;
-      notifyListeners();
-      print(response.body);
+      final url = Uri.parse('${API.BASE_URL}actividades');
+      final response = await http.get(
+        url,
+        headers: API.defaultHeaders,
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonData = jsonDecode(response.body)['actividades'];
+        subjects = jsonData.map((json) => Materia.fromJson(json)).toList();
+        searchsSubjects = subjects;
+        isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
       return false;
     }
   }

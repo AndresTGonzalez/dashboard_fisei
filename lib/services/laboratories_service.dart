@@ -86,7 +86,7 @@ class LaboratoriesService extends ChangeNotifier {
 
   Future<bool> updateLaboratory(Aula aula) async {
     try {
-      final url = Uri.parse('${API.BASE_URL}aulas/1');
+      final url = Uri.parse('${API.BASE_URL}aulas/${aula.id}');
       final response = await http.put(
         url,
         headers: API.defaultHeaders,
@@ -111,6 +111,7 @@ class LaboratoriesService extends ChangeNotifier {
         notifyListeners();
         return true;
       } else {
+        print(response.body);
         return false;
       }
     } catch (e) {

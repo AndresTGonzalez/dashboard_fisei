@@ -50,25 +50,32 @@ class SchedulesService extends ChangeNotifier {
   }
 
   Future getSchedulesByTeacher(int id) async {
-    isLoading = true;
-    notifyListeners();
-    schedules.clear();
-    final url = Uri.parse('${API.BASE_URL}docente/$id');
-    final response = await http.get(
-      url,
-      headers: API.defaultHeaders,
-    );
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final schedulesData = data['horarioInfo'];
-      schedulesData.forEach((schedule) {
-        final scheduleTemp = HorarioInfo.fromJson(schedule);
-        schedules.add(scheduleTemp);
-      });
-      sortSchedules();
-      isLoading = false;
+    try {
+      isLoading = true;
       notifyListeners();
-    } else {}
+      schedules.clear();
+      final url = Uri.parse('${API.BASE_URL}docente/$id');
+      final response = await http.get(
+        url,
+        headers: API.defaultHeaders,
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final schedulesData = data['horarioInfo'];
+        schedulesData.forEach((schedule) {
+          final scheduleTemp = HorarioInfo.fromJson(schedule);
+          schedules.add(scheduleTemp);
+        });
+        sortSchedules();
+        isLoading = false;
+        debugPrint(response.body);
+        notifyListeners();
+      } else {
+        debugPrint(response.body);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   Future deleteSchedule(int id) async {
@@ -123,8 +130,10 @@ class SchedulesService extends ChangeNotifier {
         sortSchedules();
         isLoading = false;
         notifyListeners();
+        debugPrint('Horario agregado');
         return true;
       } else {
+        debugPrint(response.body);
         return false;
       }
     } catch (e) {

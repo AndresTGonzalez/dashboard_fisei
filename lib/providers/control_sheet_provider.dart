@@ -7,18 +7,28 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ControlSheetProvider extends ChangeNotifier {
+  TextEditingController dateinput = TextEditingController();
+
   int _blok = 0;
   String _manana = '';
   String _tarde = '';
+  DateTime _date = DateTime.now();
 
   List<Horario> horarios = [];
 
   int get blok => _blok;
   String get manana => _manana;
+  DateTime get date => _date;
   String get tarde => _tarde;
 
   set blok(int value) {
     _blok = value;
+    notifyListeners();
+  }
+
+  set date(DateTime value) {
+    _date = value;
+    dateinput.text = value.toString().substring(0, 10);
     notifyListeners();
   }
 
@@ -32,13 +42,15 @@ class ControlSheetProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ControlSheetProvider() {
+    dateinput.text = DateTime.now().toString().substring(0, 10);
+  }
+
   Future getSchedules({
     int blok = 0,
   }) async {
     try {
-      print(blok);
-      DateTime now = DateTime.now();
-      final url = Uri.parse('${API.BASE_URL}horario/$blok/${now.weekday}');
+      final url = Uri.parse('${API.BASE_URL}horario/$blok/${_date.weekday}');
       final response = await http.get(
         url,
         headers: API.defaultHeaders,
@@ -51,6 +63,7 @@ class ControlSheetProvider extends ChangeNotifier {
           horarios: horarios,
           manana: manana,
           tarde: tarde,
+          fecha: _date,
         );
       } else {
         print(response.body);

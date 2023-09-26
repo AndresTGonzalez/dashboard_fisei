@@ -77,6 +77,28 @@ class _Dialog extends StatelessWidget {
               const SizedBox(height: 20),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.5,
+                child: TextFormField(
+                  controller: controlSheetProvider.dateinput,
+                  readOnly: true,
+                  decoration: _dropdownStyle(label: 'Fecha'),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(
+                          2000), //DateTime.now() - not to allow to choose before today.
+                      lastDate: DateTime(2101),
+                    );
+
+                    if (pickedDate != null) {
+                      controlSheetProvider.date = pickedDate;
+                    } else {}
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
                 child: DropdownButtonFormField(
                   items: controlSheetProvider.blok == 1
                       ? SelectorStaticOptions.auxiliaresBloque1
@@ -183,11 +205,6 @@ class _Dialog extends StatelessWidget {
         MaterialButton(
           onPressed: () async {
             controlSheetProvider.getSchedules(blok: controlSheetProvider.blok);
-            GenerateControllSheet.generateBlock(
-              horarios: controlSheetProvider.horarios,
-              manana: controlSheetProvider.manana,
-              tarde: controlSheetProvider.tarde,
-            );
           },
           color: AppColors.green,
           height: 40,

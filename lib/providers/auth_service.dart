@@ -35,7 +35,7 @@ class AuthProvider extends ChangeNotifier {
 
     if (user != null) {
       String? token = await user.getIdToken();
-      printWrapped(token!);
+      // printWrapped(token!);
       Security.token = token!;
     } else {}
   }

@@ -1,4 +1,5 @@
 import 'package:dashboard_fisei/constants/app_colors.dart';
+import 'package:dashboard_fisei/forms/complementary_form.dart';
 import 'package:dashboard_fisei/forms/schedule_form.dart';
 import 'package:dashboard_fisei/services/schedules_service.dart';
 import 'package:dashboard_fisei/services/select_teacher_service.dart';
@@ -59,46 +60,93 @@ class _Content extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  MaterialButton(
-                    onPressed: schedulesService.selectedTeacherId != 0
-                        ? () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ScheduleForm2(
-                                  schedulesService: schedulesService,
-                                  teacherId: schedulesService.selectedTeacherId,
+                  Row(
+                    children: [
+                      MaterialButton(
+                        onPressed: schedulesService.selectedTeacherId != 0
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ComplementaryForm(
+                                      schedulesService: schedulesService,
+                                      teacherId:
+                                          schedulesService.selectedTeacherId,
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          }
-                        : null,
-                    color: AppColors.vine,
-                    disabledColor: Colors.black26,
-                    height: 40,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Container(
-                      // color: AppColors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.add,
-                            color: AppColors.white,
+                              }
+                            : null,
+                        color: AppColors.black,
+                        disabledColor: Colors.black26,
+                        height: 40,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Container(
+                          // color: AppColors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: AppColors.white,
+                              ),
+                              Text(
+                                'Complementario',
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            'Nuevo',
-                            style: GoogleFonts.openSans(
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  )
+                      const SizedBox(width: 10),
+                      MaterialButton(
+                        onPressed: schedulesService.selectedTeacherId != 0
+                            ? () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ScheduleForm2(
+                                      schedulesService: schedulesService,
+                                      teacherId:
+                                          schedulesService.selectedTeacherId,
+                                    );
+                                  },
+                                );
+                              }
+                            : null,
+                        color: AppColors.vine,
+                        disabledColor: Colors.black26,
+                        height: 40,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Container(
+                          // color: AppColors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: AppColors.white,
+                              ),
+                              Text(
+                                'Horario',
+                                style: GoogleFonts.openSans(
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -190,7 +238,7 @@ class _DataTableSchedules extends StatelessWidget {
               cells: [
                 DataCell(Text(schedule.actividad)),
                 DataCell(Text(schedule.carrera)),
-                DataCell(Text(schedule.nivel)),
+                DataCell(Text('${schedule.nivel}')),
                 DataCell(Text(schedule.diaSemana)),
                 DataCell(Text(schedule.horaInicio)),
                 DataCell(Text(schedule.horaFin)),
