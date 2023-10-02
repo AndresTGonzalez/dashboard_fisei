@@ -238,7 +238,7 @@ class _DataTableSchedules extends StatelessWidget {
               cells: [
                 DataCell(Text(schedule.actividad)),
                 DataCell(Text(schedule.carrera)),
-                DataCell(Text('${schedule.nivel}')),
+                DataCell(Text('${schedule.nivel} ${schedule.paralelo}')),
                 DataCell(Text(schedule.diaSemana)),
                 DataCell(Text(schedule.horaInicio)),
                 DataCell(Text(schedule.horaFin)),
