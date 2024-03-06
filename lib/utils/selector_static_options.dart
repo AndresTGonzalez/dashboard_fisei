@@ -128,17 +128,19 @@ class SelectorStaticOptions {
   ];
 
   static List<String> auxiliaresBloque1 = [
-    'Javier Saltos',
-    'Alexandra Barrionuevo',
+    'Diana Garcés',
+    '08NN7',
+    '08NN8',
   ];
   static List<String> auxiliaresBloque2 = [
-    'Andrés Pinos',
+    'Estefania Abril',
     'Jose Romero',
   ];
   static List<String> auxiliares = [
-    'Javier Saltos',
-    'Alexandra Barrionuevo',
-    'Andrés Pinos',
+    'Diana Garcés',
+    '08NN7',
+    '08NN8',
+    'Estefania Abril',
     'Jose Romero',
   ];
 }
