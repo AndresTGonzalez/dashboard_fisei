@@ -80,7 +80,7 @@ class GenerateControllSheet {
         laboratorio: horarios[i].laboratorio,
         docente: horarios[i].docente,
         auxiliar: auxiliar,
-        periodo: 'Septiembre 2023 - Febrero 2024',
+        periodo: SelectorStaticOptions.periodo,
         nivel: horarios[i].nivel,
         ingreso: '${horarios[i].inicio}H00',
         salida: '${horarios[i].fin}H00',

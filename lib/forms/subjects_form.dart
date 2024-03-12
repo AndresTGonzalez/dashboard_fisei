@@ -183,9 +183,9 @@ class SubjectsForm extends StatelessWidget {
               if (await subjectsService.updateSubject(
                 Materia(
                   id: materia.id,
-                  nombre: subjectsService.nombre,
-                  nivel: subjectsService.nivel,
-                  idCarrera: subjectsService.idCarrera,
+                  nombre: materia.nombre,
+                  nivel: materia.nivel,
+                  idCarrera: materia.idCarrera,
                 ),
               )) {
                 // ignore: use_build_context_synchronously

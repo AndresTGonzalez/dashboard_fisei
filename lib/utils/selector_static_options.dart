@@ -143,4 +143,7 @@ class SelectorStaticOptions {
     'Estefania Abril',
     'Jose Romero',
   ];
+
+  static const String periodo = 'Marzo - Agosto 2024';
+
 }
