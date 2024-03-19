@@ -272,6 +272,7 @@ class _FormDialog extends StatelessWidget {
               numeroDia: schedulesService.numeroDia,
             )) {
               await schedulesService.getSchedulesByTeacher(teacherId);
+              // ignore: use_build_context_synchronously
               Navigator.of(context).pop();
             } else {
               // Mostrar error

@@ -138,8 +138,8 @@ class SelectorStaticOptions {
   ];
   static List<String> auxiliares = [
     'Diana Garcés',
-    '08NN7',
-    '08NN8',
+    'Hipatia Villacis',
+    'David Gonzalez',
     'Estefania Abril',
     'Jose Romero',
   ];

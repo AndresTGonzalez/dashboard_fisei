@@ -101,7 +101,7 @@ class _Dialog extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: DropdownButtonFormField(
                   items: controlSheetProvider.blok == 1
-                      ? SelectorStaticOptions.auxiliaresBloque1
+                      ? SelectorStaticOptions.auxiliares
                           .map(
                             (e) => DropdownMenuItem(
                               value: e,
@@ -116,7 +116,7 @@ class _Dialog extends StatelessWidget {
                             ),
                           )
                           .toList()
-                      : SelectorStaticOptions.auxiliaresBloque2
+                      : SelectorStaticOptions.auxiliares
                           .map(
                             (e) => DropdownMenuItem(
                               value: e,
@@ -144,7 +144,7 @@ class _Dialog extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: DropdownButtonFormField(
                   items: controlSheetProvider.blok == 1
-                      ? SelectorStaticOptions.auxiliaresBloque1
+                      ? SelectorStaticOptions.auxiliares
                           .map(
                             (e) => DropdownMenuItem(
                               value: e,
@@ -159,7 +159,7 @@ class _Dialog extends StatelessWidget {
                             ),
                           )
                           .toList()
-                      : SelectorStaticOptions.auxiliaresBloque2
+                      : SelectorStaticOptions.auxiliares
                           .map(
                             (e) => DropdownMenuItem(
                               value: e,

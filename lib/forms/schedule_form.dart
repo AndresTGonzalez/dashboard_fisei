@@ -354,7 +354,7 @@ class _FormDialog extends StatelessWidget {
               paraleloId: schedulesService.paraleloId,
               horaInicio: schedulesService.horaInicio,
               horaFin: schedulesService.horaFin,
-              numeroPuesto: schedulesService.numeroPuesto,
+              // numeroPuesto: schedulesService.numeroPuesto,
               numeroDia: schedulesService.numeroDia,
             )) {
               await schedulesService.getSchedulesByTeacher(teacherId);
