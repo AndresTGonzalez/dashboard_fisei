@@ -1,15 +1,18 @@
-# Usa la imagen base de Nginx
-FROM nginx:alpine
+# Usamos la imagen oficial de nginx como base
+FROM nginx
 
-# Elimina el archivo de configuración por defecto de Nginx
-RUN rm -rf /usr/share/nginx/html/*
+# Copiamos el archivo de configuración sample.conf al directorio de configuración de nginx
+COPY nginx.conf /etc/nginx/conf.d/nginx.conf
 
-# Copia los archivos estáticos de tu aplicación Flutter web al directorio de Nginx
+# Copiamos los certificados SSL al directorio de nginx
+COPY certs /certs
+
+# Copiamos los archivos estáticos al directorio /usr/share/nginx/build/web dentro del contenedor
 COPY build/web /usr/share/nginx/html
 
-# Expone el puerto 80
+# Exponemos los puertos 80 y 443
 EXPOSE 80
+EXPOSE 443
 
-# Inicia Nginx en primer plano cuando se ejecute el contenedor
+# Comando para iniciar nginx en segundo plano cuando se ejecuta el contenedor
 CMD ["nginx", "-g", "daemon off;"]
-
